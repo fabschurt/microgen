@@ -1,0 +1,15 @@
+{
+  "name": "@fabschurt/micro-staticgen",
+  "author": "Fabien Schurter <hello@fabschurt.dev>",
+  "license": "MIT",
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*.js"
+  },
+  "bin": {
+    "micro-staticgen": "./bin/build.js"
+  },
+  "dependencies": {
+    "pug": "^3.0.2"
+  }
+}
