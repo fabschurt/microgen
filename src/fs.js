@@ -18,8 +18,8 @@ async function openOrCreateDir(dirPath) {
 export async function createDirPrefixer(dirPath) {
   const dir = await fs.opendir(dirPath)
 
-  return function prefixRelativePath(relPath) {
-    return joinPaths(dir.path, relPath)
+  return function prefixPathWithDir(path) {
+    return joinPaths(dir.path, path)
   }
 }
 
@@ -28,15 +28,15 @@ export async function createWritableDirPrefixer(dirPath, relativePath) {
 
   await fs.access(dir.path, fs.constants.W_OK)
 
-  return function prefixRelativePath(relPath) {
-    return joinPaths(dir.path, relPath)
+  return function prefixPathWithWritableDir(path) {
+    return joinPaths(dir.path, path)
   }
 }
 
-export async function writeToFile(dest, content) {
+export function writeToFile(dest, content) {
   return fs.writeFile(dest, content)
 }
 
-export async function copyFile(src, dest) {
+export function copyFile(src, dest) {
   return fs.copyFile(src, dest)
 }
