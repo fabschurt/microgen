@@ -4,10 +4,14 @@
   "license": "MIT",
   "type": "module",
   "imports": {
-    "#src/*": "./src/*.js"
+    "#src/*": "./src/*.js",
+    "#tests/helpers": "./tests/helpers.js"
   },
   "bin": {
     "microgen": "./bin/build.js"
+  },
+  "scripts": {
+    "test": "node --test --test-reporter=spec tests/**/*.test.js"
   },
   "dependencies": {
     "pug": "^3.0.2"

@@ -1,0 +1,19 @@
+name: Tests and QA checks
+
+on:
+  push: ~
+
+concurrency:
+  group: test--${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/hydrogen
+      - run: npm install
+      - run: npm test
