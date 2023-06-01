@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import assert from 'node:assert'
 import * as fs from '#src/fs'
-import createPugRenderer from '#src/render'
+import createPugRenderer from '#src/render/pug'
 import buildMicroSite from '#src/build'
 
 assert.ok(process.argv[2])
