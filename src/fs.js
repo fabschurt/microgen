@@ -1,5 +1,4 @@
 import * as fs from 'node:fs/promises'
-import { join as joinPaths } from 'node:path'
 
 async function openOrCreateDir(dirPath) {
   try {
@@ -15,28 +14,35 @@ async function openOrCreateDir(dirPath) {
   }
 }
 
-export async function createDirPrefixer(dirPath) {
-  const dir = await fs.opendir(dirPath)
+export function withDir(dirPath) {
+  return async function runCallbackWithDir(cb) {
+    const dir = await fs.opendir(dirPath)
+    const returnValue = cb(dir.path)
+    dir.close()
 
-  return function prefixPathWithDir(path) {
-    return joinPaths(dir.path, path)
+    return returnValue
   }
 }
 
-export async function createWritableDirPrefixer(dirPath, relativePath) {
-  const dir = await openOrCreateDir(dirPath)
+export function withWritableDir(dirPath) {
+  return async function runCallbackWithDir(cb) {
+    const dir = await openOrCreateDir(dirPath)
+    await fs.access(dir.path, fs.constants.W_OK)
+    const returnValue = cb(dir.path)
+    dir.close()
 
-  await fs.access(dir.path, fs.constants.W_OK)
-
-  return function prefixPathWithWritableDir(path) {
-    return joinPaths(dir.path, path)
+    return returnValue
   }
 }
 
-export function writeToFile(dest, content) {
-  return fs.writeFile(dest, content)
+export function readFile(path) {
+  return fs.readFile(path)
 }
 
-export function copyFile(src, dest) {
-  return fs.copyFile(src, dest)
+export function writeFile(path, content) {
+  return fs.writeFile(path, content)
+}
+
+export function copyFile(srcPath, destPath) {
+  return fs.copyFile(srcPath, destPath)
 }
