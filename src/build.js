@@ -1,31 +1,38 @@
-const
-  INDEX_TEMPLATE_NAME = 'index',
-  INDEX_OUTPUT_NAME = 'index.html',
-  CSS_FILE_NAME = 'style.css'
+import { join } from 'node:path'
 
-function renderIndex(prefixPathWithBuildDir, renderTemplate, writeToFile) {
-  return writeToFile(
-    prefixPathWithBuildDir(INDEX_OUTPUT_NAME),
-    renderTemplate(INDEX_TEMPLATE_NAME),
-  )
-}
+const DATA_FILE_NAME = 'data.json'
+const INDEX_TEMPLATE_NAME = 'index.pug'
+const INDEX_OUTPUT_NAME = 'index.html'
+const CSS_FILE_NAME = 'style.css'
 
-function copyStyleFile(prefixPathWithSrcDir, prefixPathWithBuildDir, copyFile) {
-  return copyFile(
-    prefixPathWithSrcDir(CSS_FILE_NAME),
-    prefixPathWithBuildDir(CSS_FILE_NAME),
-  )
-}
-
-export default function buildMicroSite(
-  prefixPathWithSrcDir,
-  prefixPathWithBuildDir,
+export function renderIndex(
+  withSrcDir,
+  withBuildDir,
+  readFile,
+  writeFile,
   renderTemplate,
-  copyFile,
-  writeToFile,
 ) {
-  return Promise.all([
-    renderIndex(prefixPathWithBuildDir, renderTemplate, writeToFile),
-    copyStyleFile(prefixPathWithSrcDir, prefixPathWithBuildDir, copyFile),
-  ])
+  return withSrcDir((srcDirPath) => {
+    return withBuildDir(async (buildDirPath) => {
+      return writeFile(
+        join(buildDirPath, INDEX_OUTPUT_NAME),
+        renderTemplate(
+          await readFile(
+            join(srcDirPath, INDEX_TEMPLATE_NAME),
+          )
+        )
+      )
+    })
+  })
+}
+
+export function copyCssFile(withSrcDir, withBuildDir, copyFile) {
+  return withSrcDir((srcDirPath) => {
+    return withBuildDir((buildDirPath) => {
+      return copyFile(
+        join(srcDirPath, CSS_FILE_NAME),
+        join(buildDirPath, CSS_FILE_NAME),
+      )
+    })
+  })
 }
