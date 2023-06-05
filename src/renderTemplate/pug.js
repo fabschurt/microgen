@@ -1,5 +1,8 @@
 import { render } from 'pug'
 
-export default function renderTemplate(templateStream) {
-  return render(templateStream)
+export default function renderTemplate(templateStream, data) {
+  return render(templateStream, {
+    ...data,
+    self: true,
+  })
 }

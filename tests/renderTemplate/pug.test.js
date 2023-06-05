@@ -5,9 +5,17 @@ import renderTemplate from '#src/renderTemplate/pug'
 describe('renderTemplate/pug', () => {
   describe('renderTemplate()', () => {
     it('should render Pug as HTML', () => {
+      const data = {
+        name: 'Gill',
+        surname: 'Bates',
+      }
+
       assert.strictEqual(
-        renderTemplate('doctype html\nhtml\n  body\n    p Hello world!'),
-        '<!DOCTYPE html><html><body><p>Hello world!</p></body></html>'
+        renderTemplate(
+          'doctype html\nhtml\n  body\n    p Hello, #{self.name} #{self.surname}.',
+          data,
+        ),
+        '<!DOCTYPE html><html><body><p>Hello, Gill Bates.</p></body></html>',
       )
     })
   })

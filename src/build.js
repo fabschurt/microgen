@@ -10,28 +10,45 @@ export function renderIndex(
   withBuildDir,
   readFile,
   writeFile,
+  ifExists,
+  parseJson,
   renderTemplate,
 ) {
   return withSrcDir((srcDirPath) => {
     return withBuildDir(async (buildDirPath) => {
+      const jsonDataPath = join(srcDirPath, DATA_FILE_NAME)
+      const data = await ifExists(
+        jsonDataPath,
+        async (path) => parseJson(await readFile(path)),
+        {},
+      )
+
+      const renderedTemplate = renderTemplate(
+        await readFile(join(srcDirPath, INDEX_TEMPLATE_NAME)),
+        data,
+      )
+
       return writeFile(
         join(buildDirPath, INDEX_OUTPUT_NAME),
-        renderTemplate(
-          await readFile(
-            join(srcDirPath, INDEX_TEMPLATE_NAME),
-          )
-        )
+        renderedTemplate,
       )
     })
   })
 }
 
-export function copyCssFile(withSrcDir, withBuildDir, copyFile) {
+export function copyCssFile(
+  withSrcDir,
+  withBuildDir,
+  copyFile,
+  ifExists,
+) {
   return withSrcDir((srcDirPath) => {
     return withBuildDir((buildDirPath) => {
-      return copyFile(
-        join(srcDirPath, CSS_FILE_NAME),
-        join(buildDirPath, CSS_FILE_NAME),
+      const cssFileSrcPath = join(srcDirPath, CSS_FILE_NAME)
+
+      return ifExists(
+        cssFileSrcPath,
+        (path) => copyFile(path, join(buildDirPath, CSS_FILE_NAME)),
       )
     })
   })

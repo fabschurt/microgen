@@ -17,10 +17,12 @@ async function openOrCreateDir(dirPath) {
 export function withDir(dirPath) {
   return async function runCallbackWithDir(cb) {
     const dir = await fs.opendir(dirPath)
-    const returnValue = cb(dir.path)
-    dir.close()
 
-    return returnValue
+    try {
+      return cb(dir.path)
+    } finally {
+      dir.close()
+    }
   }
 }
 
@@ -28,11 +30,23 @@ export function withWritableDir(dirPath) {
   return async function runCallbackWithDir(cb) {
     const dir = await openOrCreateDir(dirPath)
     await fs.access(dir.path, fs.constants.W_OK)
-    const returnValue = cb(dir.path)
-    dir.close()
 
-    return returnValue
+    try {
+      return cb(dir.path)
+    } finally {
+      dir.close()
+    }
   }
+}
+
+export async function ifExists(path, cb, defaultReturn) {
+  try {
+    await fs.access(path, fs.constants.F_OK & fs.constants.R_OK)
+  } catch (err) {
+    return defaultReturn ?? false
+  }
+
+  return cb(path)
 }
 
 export function readFile(path) {
