@@ -1,4 +1,5 @@
 import * as fs from 'node:fs/promises'
+import { join } from 'node:path'
 
 async function openOrCreateDir(dirPath) {
   try {
@@ -19,7 +20,7 @@ export function withDir(dirPath) {
     const dir = await fs.opendir(dirPath)
 
     try {
-      return cb(dir.path)
+      return cb((relativePath) => join(dir.path, relativePath))
     } finally {
       dir.close()
     }
@@ -32,18 +33,18 @@ export function withWritableDir(dirPath) {
     await fs.access(dir.path, fs.constants.W_OK)
 
     try {
-      return cb(dir.path)
+      return cb((relativePath) => join(dir.path, relativePath))
     } finally {
       dir.close()
     }
   }
 }
 
-export async function ifExists(path, cb, defaultReturn) {
+export async function ifExists(path, cb, defaultReturn = false) {
   try {
     await fs.access(path, fs.constants.F_OK & fs.constants.R_OK)
   } catch (err) {
-    return defaultReturn ?? false
+    return defaultReturn
   }
 
   return cb(path)

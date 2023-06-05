@@ -14,9 +14,9 @@ export function renderIndex(
   parseJson,
   renderTemplate,
 ) {
-  return withSrcDir((srcDirPath) => {
-    return withBuildDir(async (buildDirPath) => {
-      const jsonDataPath = join(srcDirPath, DATA_FILE_NAME)
+  return withSrcDir((prefixWithSrcPath) => {
+    return withBuildDir(async (prefixWithBuildPath) => {
+      const jsonDataPath = prefixWithSrcPath(DATA_FILE_NAME)
       const data = await ifExists(
         jsonDataPath,
         async (path) => parseJson(await readFile(path)),
@@ -24,12 +24,12 @@ export function renderIndex(
       )
 
       const renderedTemplate = renderTemplate(
-        await readFile(join(srcDirPath, INDEX_TEMPLATE_NAME)),
+        await readFile(prefixWithSrcPath(INDEX_TEMPLATE_NAME)),
         data,
       )
 
       return writeFile(
-        join(buildDirPath, INDEX_OUTPUT_NAME),
+        prefixWithBuildPath(INDEX_OUTPUT_NAME),
         renderedTemplate,
       )
     })
@@ -42,13 +42,13 @@ export function copyCssFile(
   copyFile,
   ifExists,
 ) {
-  return withSrcDir((srcDirPath) => {
-    return withBuildDir((buildDirPath) => {
-      const cssFileSrcPath = join(srcDirPath, CSS_FILE_NAME)
+  return withSrcDir((prefixWithSrcPath) => {
+    return withBuildDir((prefixWithBuildPath) => {
+      const cssFileSrcPath = prefixWithSrcPath(CSS_FILE_NAME)
 
       return ifExists(
         cssFileSrcPath,
-        (path) => copyFile(path, join(buildDirPath, CSS_FILE_NAME)),
+        (path) => copyFile(path, prefixWithBuildPath(CSS_FILE_NAME)),
       )
     })
   })
