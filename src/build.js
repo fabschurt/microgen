@@ -10,14 +10,14 @@ export function renderIndex(
   withBuildDir,
   readFile,
   writeFile,
-  ifExists,
+  ifPathExists,
   parseJson,
   renderTemplate,
 ) {
   return withSrcDir((prefixWithSrcPath) => {
     return withBuildDir(async (prefixWithBuildPath) => {
       const jsonDataPath = prefixWithSrcPath(DATA_FILE_NAME)
-      const data = await ifExists(
+      const data = await ifPathExists(
         jsonDataPath,
         async (path) => parseJson(await readFile(path)),
         {},
@@ -40,13 +40,13 @@ export function copyCssFile(
   withSrcDir,
   withBuildDir,
   copyFile,
-  ifExists,
+  ifPathExists,
 ) {
   return withSrcDir((prefixWithSrcPath) => {
     return withBuildDir((prefixWithBuildPath) => {
       const cssFileSrcPath = prefixWithSrcPath(CSS_FILE_NAME)
 
-      return ifExists(
+      return ifPathExists(
         cssFileSrcPath,
         (path) => copyFile(path, prefixWithBuildPath(CSS_FILE_NAME)),
       )
