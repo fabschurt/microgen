@@ -1,48 +1,39 @@
 import * as fs from 'node:fs/promises'
 import { join } from 'node:path'
 
-async function openOrCreateDir(dirPath) {
-  try {
-    return await fs.opendir(dirPath)
-  } catch (err) {
-    if (err.code != 'ENOENT') {
-      throw err
-    }
-
-    await fs.mkdir(dirPath, { recursive: true })
-
-    return fs.opendir(dirPath)
-  }
-}
-
 export function withDir(dirPath) {
-  return async function runCallbackWithDir(cb) {
-    const dir = await fs.opendir(dirPath)
+  return async function runCallback(cb) {
+    await fs.access(dirPath)
 
-    try {
-      return cb((relativePath) => join(dir.path, relativePath))
-    } finally {
-      dir.close()
-    }
+    const dirPrefixer = (relativePath) => join(dirPath, relativePath)
+
+    return cb(dirPrefixer)
   }
 }
 
-export function withWritableDir(dirPath) {
-  return async function runCallbackWithDir(cb) {
-    const dir = await openOrCreateDir(dirPath)
-    await fs.access(dir.path, fs.constants.W_OK)
-
+export function withScratchDir(dirPath) {
+  return async function runCallback(cb) {
     try {
-      return cb((relativePath) => join(dir.path, relativePath))
-    } finally {
-      dir.close()
+      await fs.access(dirPath)
+    } catch (err) {
+      if (err.code !== 'ENOENT') {
+        throw err
+      }
+
+      await fs.mkdir(dirPath, { recursive: true })
     }
+
+    await fs.access(dirPath, fs.constants.W_OK)
+
+    const dirPrefixer = (relativePath) => join(dirPath, relativePath)
+
+    return cb(dirPrefixer)
   }
 }
 
-export async function ifExists(path, cb, defaultReturn = false) {
+export async function ifPathExists(path, cb, defaultReturn = false) {
   try {
-    await fs.access(path, fs.constants.F_OK & fs.constants.R_OK)
+    await fs.access(path)
   } catch (err) {
     return defaultReturn
   }
@@ -51,7 +42,7 @@ export async function ifExists(path, cb, defaultReturn = false) {
 }
 
 export function readFile(path) {
-  return fs.readFile(path)
+  return fs.readFile(path, { encoding: 'utf8' })
 }
 
 export function writeFile(path, content) {

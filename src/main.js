@@ -1,10 +1,10 @@
 import {
   withDir,
-  withWritableDir,
+  withScratchDir,
   readFile,
   writeFile,
   copyFile,
-  ifExists,
+  ifPathExists,
 } from '#src/utils/fs'
 import { renderIndex, copyCssFile } from '#src/build'
 import { parseJson } from '#src/utils/json'
@@ -12,7 +12,7 @@ import renderTemplate from '#src/renderTemplate/pug'
 
 export default async function buildProject(srcDirPath, buildDirPath) {
   const withSrcDir = await withDir(srcDirPath)
-  const withBuildDir = await withWritableDir(buildDirPath)
+  const withBuildDir = await withScratchDir(buildDirPath)
 
   return Promise.all([
     renderIndex(
@@ -20,7 +20,7 @@ export default async function buildProject(srcDirPath, buildDirPath) {
       withBuildDir,
       readFile,
       writeFile,
-      ifExists,
+      ifPathExists,
       parseJson,
       renderTemplate,
     ),
@@ -28,7 +28,7 @@ export default async function buildProject(srcDirPath, buildDirPath) {
       withSrcDir,
       withBuildDir,
       copyFile,
-      ifExists,
+      ifPathExists,
     ),
   ])
 }
