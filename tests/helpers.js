@@ -7,10 +7,10 @@ const TMP_DIR_PREFIX = 'microgen-tests-'
 
 export async function withTempDir(cb) {
   const tempDirPath = await mkdtemp(join(tmpdir(), TMP_DIR_PREFIX))
-  const dirPrefixer = (relativePath) => join(tempDirPath, relativePath)
+  const prefixWithDir = (relativePath = '') => join(tempDirPath, relativePath)
 
   try {
-    return await cb(dirPrefixer)
+    return await cb(prefixWithDir)
   } finally {
     await rm(tempDirPath, { recursive: true })
   }

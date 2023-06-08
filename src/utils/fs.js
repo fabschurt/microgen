@@ -5,9 +5,9 @@ export function withDir(dirPath) {
   return async function runCallback(cb) {
     await fs.access(dirPath)
 
-    const dirPrefixer = (relativePath) => join(dirPath, relativePath)
+    const prefixWithDir = (relativePath = '') => join(dirPath, relativePath)
 
-    return cb(dirPrefixer)
+    return cb(prefixWithDir)
   }
 }
 
@@ -25,9 +25,9 @@ export function withScratchDir(dirPath) {
 
     await fs.access(dirPath, fs.constants.W_OK)
 
-    const dirPrefixer = (relativePath) => join(dirPath, relativePath)
+    const prefixWithDir = (relativePath = '') => join(dirPath, relativePath)
 
-    return cb(dirPrefixer)
+    return cb(prefixWithDir)
   }
 }
 
