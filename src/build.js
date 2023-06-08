@@ -3,7 +3,7 @@ import { join } from 'node:path'
 const DATA_FILE_NAME = 'data.json'
 const INDEX_TEMPLATE_NAME = 'index.pug'
 const INDEX_OUTPUT_NAME = 'index.html'
-const CSS_FILE_NAME = 'style.css'
+const ASSET_DIR_NAME = 'assets'
 
 export function renderIndex(
   withSrcDir,
@@ -36,19 +36,19 @@ export function renderIndex(
   })
 }
 
-export function copyCssFile(
+export function copyAssetDir(
   withSrcDir,
   withBuildDir,
-  copyFile,
+  copyDir,
   ifPathExists,
 ) {
   return withSrcDir((prefixWithSrcPath) => {
     return withBuildDir((prefixWithBuildPath) => {
-      const cssFileSrcPath = prefixWithSrcPath(CSS_FILE_NAME)
+      const assetDirPath = prefixWithSrcPath(ASSET_DIR_NAME)
 
       return ifPathExists(
-        cssFileSrcPath,
-        (path) => copyFile(path, prefixWithBuildPath(CSS_FILE_NAME)),
+        assetDirPath,
+        (path) => copyDir(path, prefixWithBuildPath(ASSET_DIR_NAME)),
       )
     })
   })

@@ -9,6 +9,7 @@ import {
   ifPathExists,
   readFile,
   writeFile,
+  copyDir,
 } from '#src/utils/fs'
 
 describe('utils/fs', () => {
@@ -134,6 +135,50 @@ describe('utils/fs', () => {
           await fs.readFile(filePath, { encoding: 'utf8' }),
           fileContent,
         )
+      })
+    })
+  })
+
+  describe('copyDir()', () => {
+    it('recursively copies a directory', async () => {
+      await withTempDir(async (prefixWithTempDir) => {
+        const srcDirPath = prefixWithTempDir('src')
+        const nestedDirPath = join(srcDirPath, 'nested/dir')
+        const file1Path = join(srcDirPath, 'test.css')
+        const file2Path = join(nestedDirPath, 'test.json')
+        const file1Content = 'html { display: none; }'
+        const file2Content = '{ "foo": "bar" }'
+
+        await fs.mkdir(nestedDirPath, { recursive: true })
+        await fs.writeFile(file1Path, file1Content)
+        await fs.writeFile(file2Path, file2Content)
+
+        const destDirPath = prefixWithTempDir('build')
+
+        await copyDir(srcDirPath, destDirPath)
+
+        assert.strictEqual(
+          await fs.readFile(join(destDirPath, 'test.css'), { encoding: 'utf8' }),
+          file1Content,
+        )
+        assert.strictEqual(
+          await fs.readFile(join(destDirPath, 'nested/dir/test.json'), { encoding: 'utf8' }),
+          file2Content,
+        )
+      })
+    })
+
+    it('throws if some destination files already exist', async () => {
+      await withTempDir(async (prefixWithTempDir) => {
+        const srcDirPath = prefixWithTempDir('src')
+        const destDirPath = prefixWithTempDir('dist')
+
+        await fs.mkdir(srcDirPath)
+        await fs.mkdir(destDirPath)
+        await fs.writeFile(join(srcDirPath, 'test.txt'), 'All your base are belong to us.')
+        await fs.writeFile(join(destDirPath, 'test.txt'), 'Whatever…')
+
+        await assert.rejects(copyDir(srcDirPath, destDirPath))
       })
     })
   })
