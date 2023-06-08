@@ -10,6 +10,7 @@ import {
   readFile,
   writeFile,
   copyDir,
+  rmDir,
 } from '#src/utils/fs'
 
 describe('utils/fs', () => {
@@ -176,6 +177,21 @@ describe('utils/fs', () => {
         await fs.writeFile(join(destDirPath, 'test.txt'), 'Whatever…')
 
         await assert.rejects(copyDir(srcDirPath, destDirPath))
+      })
+    })
+  })
+
+  describe('rmDir()', () => {
+    it('recursively removes a directory', async () => {
+      await withTempDir(async (prefixWithTempDir) => {
+        const dirPath = prefixWithTempDir('build')
+        const filePath = join(dirPath, 'test.txt')
+
+        await fs.mkdir(dirPath)
+        await fs.writeFile(filePath, 'Don’t mind me, I’m going away.')
+        await rmDir(dirPath)
+
+        await assert.rejects(fs.access(dirPath))
       })
     })
   })

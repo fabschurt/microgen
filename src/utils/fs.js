@@ -56,3 +56,11 @@ export function copyDir(srcPath, destPath) {
     errorOnExist: true,
   })
 }
+
+export function rmDir(path) {
+  if (path === '/') {
+    throw new SystemError('Removing the filesystem’s root is not allowed.')
+  }
+
+  return fs.rm(path, { recursive: true })
+}
