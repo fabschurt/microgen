@@ -28,12 +28,12 @@ describe('utils/fs', () => {
           )
         })
 
-        assert.doesNotReject(fs.access(join(dirPath, fileName)))
+        await assert.doesNotReject(fs.access(join(dirPath, fileName)))
       })
     })
 
-    it('throws if the target directory is not accessible', () => {
-      assert.rejects(withDir(generateNonExistentPath())(noop))
+    it('throws if the target directory is not accessible', async () => {
+      await assert.rejects(withDir(generateNonExistentPath())(noop))
     })
   })
 
@@ -50,8 +50,8 @@ describe('utils/fs', () => {
           )
         })
 
-        assert.doesNotReject(fs.access(dirPath))
-        assert.doesNotReject(fs.access(join(dirPath, fileName)))
+        await assert.doesNotReject(fs.access(dirPath))
+        await assert.doesNotReject(fs.access(join(dirPath, fileName)))
       })
     })
 
@@ -69,7 +69,7 @@ describe('utils/fs', () => {
           )
         })
 
-        assert.doesNotReject(fs.access(join(dirPath, fileName)))
+        await assert.doesNotReject(fs.access(join(dirPath, fileName)))
       })
     })
 
@@ -79,7 +79,7 @@ describe('utils/fs', () => {
 
         await fs.mkdir(dirPath, { mode: 0o555 })
 
-        assert.rejects(withScratchDir(dirPath)(noop))
+        await assert.rejects(withScratchDir(dirPath)(noop))
       })
     })
   })
