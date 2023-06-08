@@ -20,7 +20,6 @@ describe('utils/fs', () => {
         const fileName = 'hello.txt'
 
         await fs.mkdir(dirPath)
-
         await withDir(dirPath)(async (prefixWithDir) => {
           await fs.writeFile(
             prefixWithDir(fileName),
@@ -61,7 +60,6 @@ describe('utils/fs', () => {
         const fileName = 'doge.py'
 
         await fs.mkdir(dirPath)
-
         await withScratchDir(dirPath)(async (prefixWithDir) => {
           await fs.writeFile(
             prefixWithDir(fileName),
@@ -102,7 +100,6 @@ describe('utils/fs', () => {
         await ifPathExists(nonExistentPath, noop),
         false,
       )
-
       assert.deepStrictEqual(
         await ifPathExists(nonExistentPath, noop, ['wow', 'such', 'fail']),
         ['wow', 'such', 'fail'],
