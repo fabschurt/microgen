@@ -49,6 +49,10 @@ export function writeFile(path, content) {
   return fs.writeFile(path, content)
 }
 
-export function copyFile(srcPath, destPath) {
-  return fs.copyFile(srcPath, destPath)
+export function copyDir(srcPath, destPath) {
+  return fs.cp(srcPath, destPath, {
+    recursive: true,
+    force: false,
+    errorOnExist: true,
+  })
 }

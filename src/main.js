@@ -3,10 +3,10 @@ import {
   withScratchDir,
   readFile,
   writeFile,
-  copyFile,
+  copyDir,
   ifPathExists,
 } from '#src/utils/fs'
-import { renderIndex, copyCssFile } from '#src/build'
+import { renderIndex, copyAssetDir } from '#src/build'
 import { parseJson } from '#src/utils/json'
 import renderTemplate from '#src/renderTemplate/pug'
 
@@ -24,10 +24,10 @@ export default async function buildProject(srcDirPath, buildDirPath) {
       parseJson,
       renderTemplate,
     ),
-    copyCssFile(
+    copyAssetDir(
       withSrcDir,
       withBuildDir,
-      copyFile,
+      copyDir,
       ifPathExists,
     ),
   ])
