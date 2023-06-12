@@ -3,6 +3,10 @@
   "author": "Fabien Schurter <hello@fabschurt.dev>",
   "license": "MIT",
   "type": "module",
+  "engines": {
+    "node": "^18.15.0",
+    "npm": "^8.19.0"
+  },
   "imports": {
     "#src/*": "./src/*.js",
     "#tests/helpers": "./tests/helpers.js"
