@@ -8,7 +8,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  tests:
+    name: Tests
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
