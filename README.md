@@ -41,4 +41,5 @@ can then open in a browser and print to PDF, for example.
 - [ ] Add some CLI logging and user-friendly exception catching
 - [ ] Add support for validating input data with JSON Schema (either built-in
 or user-provided)
+- [ ] Write the last tests
 - [ ] Maybe allow for automatically converting the output HTML file to PDF
