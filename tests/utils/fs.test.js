@@ -13,7 +13,7 @@ import {
   rmDir,
 } from '#src/utils/fs'
 
-describe('utils/fs', () => {
+describe('#src/utils/fs', () => {
   describe('withDir()', () => {
     it('executes a callback that will be passed a dir-path prefixer', async () => {
       await withTempDir(async (prefixWithTempDir) => {
