@@ -37,7 +37,8 @@ can then open in a browser and print to PDF, for example.
 
 ## TODO
 
-- [ ] Add a CLI usage message
+- [x] Add a CLI usage message
+- [ ] Display the CLI usage in the README, and add details about CLI options
 - [ ] Add some CLI logging and user-friendly exception catching
 - [ ] Add support for validating input data with JSON Schema (either built-in
 or user-provided)
