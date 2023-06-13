@@ -1,8 +1,11 @@
 #!/usr/bin/env node
-import assert from 'node:assert'
+import { docopt } from 'docopt'
 import buildProject from '#src/index'
 
-assert.ok(process.argv[2])
-assert.ok(process.argv[3])
+const params = docopt(`
+A minimalist staticgen for generating simple, single-page websites.
 
-buildProject(process.argv[2], process.argv[3])
+Usage: microgen <src-dir> <build-dir>
+`)
+
+buildProject(params['<src-dir>'], params['<build-dir>'])
