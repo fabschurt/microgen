@@ -15,8 +15,8 @@
     "test": "node --test --test-reporter=spec tests"
   },
   "engines": {
-    "node": "^18.15.0",
-    "npm": "^8.19.0"
+    "node": ">=18",
+    "npm": ">=8"
   },
   "dependencies": {
     "pug": "^3.0.2"
