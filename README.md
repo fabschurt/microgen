@@ -5,14 +5,14 @@ Given the following project structure:
 ```
 dist/
 src/
-├── assets/
-│   ├── css/
-│   │   └── style.css
-│   └── img/
-│       ├── logo.png
-│       └── portrait.jpg
-├── data.json
-└── index.pug
+├─ assets/
+│  ├─ css/
+│  │  └─ style.css
+│  └─ img/
+│     ├─ logo.png
+│     └─ portrait.jpg
+├─ data.json
+└─ index.pug
 ```
 
 …if you run:
