@@ -2,7 +2,7 @@ import { describe, it } from 'node:test'
 import assert from 'node:assert'
 import renderTemplate from '#src/renderTemplate/pug'
 
-describe('renderTemplate/pug', () => {
+describe('#src/renderTemplate/pug', () => {
   describe('renderTemplate()', () => {
     it('should render Pug as HTML', () => {
       const data = {
