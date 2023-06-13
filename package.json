@@ -16,7 +16,7 @@
     "microgen": "./bin/build.js"
   },
   "scripts": {
-    "test": "node --test --test-reporter=spec tests/**/*.test.js"
+    "test": "node --test --test-reporter=spec tests"
   },
   "dependencies": {
     "pug": "^3.0.2"
