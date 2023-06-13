@@ -8,6 +8,7 @@ import {
   rmDir,
 } from '#src/utils/fs'
 import { renderIndex, copyAssetDir } from '#src/build'
+import { parseFromJsonFile, parseFromEnv } from '#src/data'
 import { parseJson } from '#src/utils/json'
 import renderTemplate from '#src/renderTemplate/pug'
 
@@ -16,6 +17,17 @@ export default async function buildProject(srcDirPath, buildDirPath) {
 
   const withSrcDir = await withDir(srcDirPath)
   const withBuildDir = await withScratchDir(buildDirPath)
+  const parseData = async () => ({
+    ...(
+      await parseFromJsonFile(
+        withSrcDir,
+        ifPathExists,
+        readFile,
+        parseJson,
+      )
+    ),
+    ...parseFromEnv(process.env),
+  })
 
   return Promise.all([
     renderIndex(
@@ -23,8 +35,7 @@ export default async function buildProject(srcDirPath, buildDirPath) {
       withBuildDir,
       readFile,
       writeFile,
-      ifPathExists,
-      parseJson,
+      parseData,
       renderTemplate,
     ),
     copyAssetDir(
