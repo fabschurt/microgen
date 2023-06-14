@@ -9,14 +9,14 @@ export function renderIndex(
   withBuildDir,
   readFile,
   writeFile,
-  parseData,
   renderTemplate,
+  data,
 ) {
   return withSrcDir((prefixWithSrcDir) => {
     return withBuildDir(async (prefixWithBuildDir) => {
       const renderedTemplate = renderTemplate(
         await readFile(prefixWithSrcDir(INDEX_TEMPLATE_NAME)),
-        await parseData(),
+        data,
       )
 
       return writeFile(
