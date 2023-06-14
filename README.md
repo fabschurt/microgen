@@ -27,9 +27,6 @@ npx github:fabschurt/microgen src dist
 * parse the data from `src/data.json`, pass it to the `src/index.pug` template,
 and finally render the whole thing as `dist/index.html`.
 
-(The `self` option is set to `true` in the Pug config, so you’ll have to prefix
-any variable name in the template with `self.`)
-
 ## Why?
 
 I mainly use this package to generate some very simple HTML/CSS content that I
