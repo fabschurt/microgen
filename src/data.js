@@ -9,7 +9,7 @@ function normalizeEnvVarName(str) {
   )
 }
 
-export async function parseFromJsonFile(
+export async function parseDataFromJsonFile(
   withSrcDir,
   ifPathExists,
   readFile,
@@ -26,7 +26,7 @@ export async function parseFromJsonFile(
   })
 }
 
-export function parseFromEnv(envObject) {
+export function parseDataFromEnv(envObject) {
   return (
     Object.fromEntries(
       Object.entries(envObject)

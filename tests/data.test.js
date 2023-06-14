@@ -5,10 +5,10 @@ import { join } from 'node:path'
 import { withTempDir } from '#tests/helpers'
 import { withDir, ifPathExists, readFile } from '#src/utils/fs'
 import { parseJson } from '#src/utils/json'
-import { parseFromJsonFile, parseFromEnv } from '#src/data'
+import { parseDataFromJsonFile, parseDataFromEnv } from '#src/data'
 
 describe('#src/data', () => {
-  describe('parseFromJsonFile()', () => {
+  describe('parseDataFromJsonFile()', () => {
     it('parses data from a pre-defined JSON file', async () => {
       await withTempDir(async (prefixWithTempDir) => {
         const dirPath = prefixWithTempDir('src')
@@ -18,7 +18,7 @@ describe('#src/data', () => {
         await writeFile(jsonFilePath, '{"stuff": ["thing", "trinket", "gizmo"]}')
 
         assert.deepStrictEqual(
-          await parseFromJsonFile(
+          await parseDataFromJsonFile(
             withDir(dirPath),
             ifPathExists,
             readFile,
@@ -36,10 +36,10 @@ describe('#src/data', () => {
     })
   })
 
-  describe('parseFromEnv()', () => {
+  describe('parseDataFromEnv()', () => {
     it('extracts data from the environment (thanks to a special prefix)', () => {
       assert.deepStrictEqual(
-        parseFromEnv({
+        parseDataFromEnv({
           EDITOR: 'vim',
           LANG: 'en_US.UTF-8',
           _MG_SECRET_PHONE_NUMBER: '+33777777777',
