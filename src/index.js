@@ -8,7 +8,7 @@ import {
   rmDir,
 } from '#src/utils/fs'
 import { renderIndex, copyAssetDir } from '#src/build'
-import { parseFromJsonFile, parseFromEnv } from '#src/data'
+import { parseDataFromJsonFile, parseDataFromEnv } from '#src/data'
 import { parseTranslations } from '#src/i18n'
 import { parseJson } from '#src/utils/json'
 import renderTemplate from '#src/renderTemplate/pug'
