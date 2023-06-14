@@ -34,6 +34,19 @@ describe('#src/data', () => {
         )
       })
     })
+
+    it('returns an empty object if the data file does not exist', async () => {
+      await withTempDir(async (prefixWithTempDir) => {
+        const dirPath = prefixWithTempDir('src')
+
+        await mkdir(dirPath)
+
+        assert.deepStrictEqual(
+          await parseDataFromJsonFile(withDir(dirPath), ifPathExists, readFile, parseJson),
+          {}
+        )
+      })
+    })
   })
 
   describe('parseDataFromEnv()', () => {
