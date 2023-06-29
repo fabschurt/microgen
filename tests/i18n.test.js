@@ -38,15 +38,10 @@ describe('#src/i18n', () => {
       })
     })
 
-    it('throws if an invalid `lang` parameter is passed', async () => {
-      await assert.rejects(
-        parseTranslations(
-          withDir(tmpdir()),
-          ifPathExists,
-          readFile,
-          parseJson,
-          'fAiL',
-        )
+    it('throws if an invalid `lang` parameter is passed', () => {
+      assert.throws(
+        () => parseTranslations(withDir(tmpdir()), ifPathExists, readFile, parseJson, 'fAiL'),
+        assert.AssertionError
       )
     })
   })
