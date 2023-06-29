@@ -9,16 +9,16 @@ function normalizeEnvVarName(str) {
   )
 }
 
-export async function parseDataFromJsonFile(
+export function parseDataFromJsonFile(
   withSrcDir,
   ifPathExists,
   readFile,
   parseJson,
 ) {
-  return await withSrcDir(async (prefixWithSrcDir) => {
+  return withSrcDir((prefixWithSrcDir) => {
     const jsonFilePath = prefixWithSrcDir(JSON_FILE_NAME)
 
-    return await ifPathExists(
+    return ifPathExists(
       jsonFilePath,
       async () => parseJson(await readFile(jsonFilePath)),
       {},

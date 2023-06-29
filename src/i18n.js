@@ -5,7 +5,7 @@ const LANG_PATTERN = /^[a-z]{2}$/
 const TRANSLATION_DIR_PATH = 'i18n'
 const TRANSLATION_FILE_PREFIX = '.json'
 
-export async function parseTranslations(
+export function parseTranslations(
   withSrcDir,
   ifPathExists,
   readFile,
@@ -14,13 +14,13 @@ export async function parseTranslations(
 ) {
   assert.match(lang, LANG_PATTERN)
 
-  return await withSrcDir(async (prefixWithSrcDir) => {
+  return withSrcDir((prefixWithSrcDir) => {
     const translationFilePath = join(
       prefixWithSrcDir(TRANSLATION_DIR_PATH),
       lang + TRANSLATION_FILE_PREFIX,
     )
 
-    return await ifPathExists(
+    return ifPathExists(
       translationFilePath,
       async () => parseJson(await readFile(translationFilePath)),
       {}

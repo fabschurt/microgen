@@ -16,8 +16,12 @@ import renderTemplate from '#src/renderTemplate/pug'
 export default async function buildProject(srcDirPath, buildDirPath, lang = null) {
   await ifPathExists(buildDirPath, rmDir)
 
-  const withSrcDir = await withDir(srcDirPath)
-  const withBuildDir = await withScratchDir(buildDirPath)
+  const [withSrcDir, withBuildDir] = await (
+    Promise.all([
+      withDir(srcDirPath),
+      withScratchDir(buildDirPath),
+    ])
+  )
 
   const data = {
     ...(await parseDataFromJsonFile(withSrcDir, ifPathExists, readFile, parseJson)),
