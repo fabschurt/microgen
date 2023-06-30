@@ -1,5 +1,5 @@
 const JSON_FILE_NAME = 'data.json'
-const ENV_VAR_PREFIX = '_MG_'
+const ENV_VAR_PREFIX = '__'
 
 function normalizeEnvVarName(str) {
   return (

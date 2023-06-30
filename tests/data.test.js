@@ -50,9 +50,9 @@ describe('#src/data', () => {
         parseDataFromEnv({
           EDITOR: 'vim',
           LANG: 'en_US.UTF-8',
-          _MG_SECRET_PHONE_NUMBER: '+33777777777',
+          __SECRET_PHONE_NUMBER: '+33777777777',
           SHELL: '/bin/bash',
-          _MG_EMAIL_ADDRESS: 'void@null.net',
+          __EMAIL_ADDRESS: 'void@null.net',
         }),
         {
           secret_phone_number: '+33777777777',

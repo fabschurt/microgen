@@ -14,8 +14,8 @@ export function parseData(
   parseDataFromJsonFile,
   parseDataFromEnv,
   parseTranslations,
-  envVars = [],
   lang = null,
+  envVars = [],
 ) {
   return Promise.all([
     parseDataFromJsonFile(withSrcDir, ifPathExists, readFile, parseJson),
