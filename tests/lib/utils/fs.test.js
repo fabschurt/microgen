@@ -11,9 +11,9 @@ import {
   writeFile,
   copyDir,
   rmDir,
-} from '#src/utils/fs'
+} from '#src/lib/utils/fs'
 
-describe('#src/utils/fs', () => {
+describe('#src/lib/utils/fs', () => {
   describe('withDir()', () => {
     it('executes a callback that will be passed a dir-path prefixer', async () => {
       await withTempDir(async (prefixWithTempDir) => {

@@ -6,14 +6,14 @@ import {
   writeFile,
   copyDir,
   rmDir,
-} from '#src/utils/fs'
-import { parseData, renderIndex, copyAssetDir } from '#src/build'
-import { parseDataFromJsonFile, parseDataFromEnv } from '#src/data'
-import { parseTranslations } from '#src/i18n'
-import { parseJson } from '#src/utils/json'
-import renderTemplate from '#src/renderTemplate/pug'
+} from '#src/lib/utils/fs'
+import { parseData, renderIndex, copyAssetDir } from '#src/lib/build'
+import { parseDataFromJsonFile, parseDataFromEnv } from '#src/lib/data'
+import { parseTranslations } from '#src/lib/i18n'
+import { parseJson } from '#src/lib/utils/json'
+import renderTemplate from '#src/lib/renderTemplate/pug'
 
-export default async function buildProject(
+export default async function microgen(
   srcDirPath,
   buildDirPath,
   lang = null,

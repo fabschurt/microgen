@@ -3,11 +3,11 @@ import assert from 'node:assert'
 import { withTempDir } from '#tests/helpers'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { withDir, ifPathExists, readFile } from '#src/utils/fs'
-import { parseJson } from '#src/utils/json'
-import { parseDataFromJsonFile, parseDataFromEnv } from '#src/data'
+import { withDir, ifPathExists, readFile } from '#src/lib/utils/fs'
+import { parseJson } from '#src/lib/utils/json'
+import { parseDataFromJsonFile, parseDataFromEnv } from '#src/lib/data'
 
-describe('#src/data', () => {
+describe('#src/lib/data', () => {
   describe('parseDataFromJsonFile()', () => {
     it('parses data from a pre-defined JSON file', async () => {
       await withTempDir(async (prefixWithTempDir) => {
