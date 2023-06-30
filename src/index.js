@@ -7,7 +7,7 @@ import {
   copyDir,
   rmDir,
 } from '#src/utils/fs'
-import { renderIndex, copyAssetDir } from '#src/build'
+import { parseData, renderIndex, copyAssetDir } from '#src/build'
 import { parseDataFromJsonFile, parseDataFromEnv } from '#src/data'
 import { parseTranslations } from '#src/i18n'
 import { parseJson } from '#src/utils/json'
@@ -23,14 +23,17 @@ export default async function buildProject(srcDirPath, buildDirPath, lang = null
     ])
   )
 
-  const data = {
-    ...(await parseDataFromJsonFile(withSrcDir, ifPathExists, readFile, parseJson)),
-    ...parseDataFromEnv(process.env),
-  }
-
-  if (lang) {
-    data.t = await parseTranslations(withSrcDir, ifPathExists, readFile, parseJson, lang)
-  }
+  const data = await parseData(
+    withSrcDir,
+    ifPathExists,
+    readFile,
+    parseJson,
+    parseDataFromJsonFile,
+    parseDataFromEnv,
+    parseTranslations,
+    process.env,
+    lang,
+  )
 
   return Promise.all([
     renderIndex(withSrcDir, withBuildDir, readFile, writeFile, renderTemplate, data),
