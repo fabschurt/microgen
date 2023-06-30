@@ -17,6 +17,7 @@ export default async function buildProject(
   srcDirPath,
   buildDirPath,
   lang = null,
+  envVars = {},
 ) {
   await ifPathExists(buildDirPath, rmDir)
 
@@ -33,8 +34,8 @@ export default async function buildProject(
     parseDataFromJsonFile,
     parseDataFromEnv,
     parseTranslations,
-    process.env,
     lang,
+    envVars,
   )
 
   return Promise.all([

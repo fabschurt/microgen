@@ -12,4 +12,5 @@ buildProject(
   params['<src-dir>'],
   params['<build-dir>'],
   params['--lang'],
+  process.env,
 )
