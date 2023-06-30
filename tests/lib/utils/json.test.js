@@ -1,8 +1,8 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert'
-import { parseJson } from '#src/utils/json'
+import { parseJson } from '#src/lib/utils/json'
 
-describe('#src/utils/json', () => {
+describe('#src/lib/utils/json', () => {
   describe('parseJson()', () => {
     it('parses an input stream as JSON', () => {
       assert.deepStrictEqual(

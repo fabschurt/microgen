@@ -4,11 +4,11 @@ import { withTempDir } from '#tests/helpers'
 import { join } from 'node:path'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
-import { withDir, ifPathExists, readFile } from '#src/utils/fs'
-import { parseJson } from '#src/utils/json'
-import { parseTranslations } from '#src/i18n'
+import { withDir, ifPathExists, readFile } from '#src/lib/utils/fs'
+import { parseJson } from '#src/lib/utils/json'
+import { parseTranslations } from '#src/lib/i18n'
 
-describe('#src/i18n', () => {
+describe('#src/lib/i18n', () => {
   describe('parseTranslations()', () => {
     it('parses a translation file from a pre-defined directory', async () => {
       await withTempDir(async (prefixWithTempDir) => {

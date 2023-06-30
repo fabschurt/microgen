@@ -3,7 +3,7 @@
   "author": "Fabien Schurter <hello@fabschurt.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "src/index.js",
+  "main": "src/microgen.js",
   "imports": {
     "#src/*": "./src/*.js",
     "#tests/helpers": "./tests/helpers.js"
