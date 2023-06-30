@@ -13,15 +13,17 @@ import { parseTranslations } from '#src/i18n'
 import { parseJson } from '#src/utils/json'
 import renderTemplate from '#src/renderTemplate/pug'
 
-export default async function buildProject(srcDirPath, buildDirPath, lang = null) {
+export default async function buildProject(
+  srcDirPath,
+  buildDirPath,
+  lang = null,
+) {
   await ifPathExists(buildDirPath, rmDir)
 
-  const [withSrcDir, withBuildDir] = await (
-    Promise.all([
-      withDir(srcDirPath),
-      withScratchDir(buildDirPath),
-    ])
-  )
+  const [withSrcDir, withBuildDir] = await Promise.all([
+    withDir(srcDirPath),
+    withScratchDir(buildDirPath),
+  ])
 
   const data = await parseData(
     withSrcDir,

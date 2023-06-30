@@ -1,8 +1,8 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert'
+import { withTempDir } from '#tests/helpers'
 import { mkdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import { withTempDir } from '#tests/helpers'
 import { withDir, ifPathExists, readFile } from '#src/utils/fs'
 import { parseJson } from '#src/utils/json'
 import { parseDataFromJsonFile, parseDataFromEnv } from '#src/data'
@@ -18,12 +18,7 @@ describe('#src/data', () => {
         await writeFile(jsonFilePath, '{"stuff": ["thing", "trinket", "gizmo"]}')
 
         assert.deepStrictEqual(
-          await parseDataFromJsonFile(
-            withDir(dirPath),
-            ifPathExists,
-            readFile,
-            parseJson,
-          ),
+          await parseDataFromJsonFile(withDir(dirPath), ifPathExists, readFile, parseJson),
           {
             stuff: [
               'thing',

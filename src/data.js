@@ -9,12 +9,7 @@ function normalizeEnvVarName(str) {
   )
 }
 
-export function parseDataFromJsonFile(
-  withSrcDir,
-  ifPathExists,
-  readFile,
-  parseJson,
-) {
+export function parseDataFromJsonFile(withSrcDir, ifPathExists, readFile, parseJson) {
   return withSrcDir((prefixWithSrcDir) => {
     const jsonFilePath = prefixWithSrcDir(JSON_FILE_NAME)
 
@@ -26,6 +21,10 @@ export function parseDataFromJsonFile(
   })
 }
 
+/**
+ * Extracts env vars whose name starts with `ENV_VAR_PREFIX`, converts this name
+ * to snake case, and returns a normalized dictionary of these extracted vars.
+ */
 export function parseDataFromEnv(envObject) {
   return (
     Object.fromEntries(
