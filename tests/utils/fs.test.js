@@ -21,11 +21,8 @@ describe('#src/utils/fs', () => {
         const fileName = 'hello.txt'
 
         await fs.mkdir(dirPath)
-        await withDir(dirPath)(async (prefixWithDir) => {
-          await fs.writeFile(
-            prefixWithDir(fileName),
-            'Hello fren!',
-          )
+        await withDir(dirPath)((prefixWithDir) => {
+          return fs.writeFile(prefixWithDir(fileName), 'Hello fren!')
         })
 
         await assert.doesNotReject(fs.access(join(dirPath, fileName)))
@@ -43,11 +40,8 @@ describe('#src/utils/fs', () => {
         const dirPath = prefixWithTempDir('dist')
         const fileName = 'test.txt'
 
-        await withScratchDir(dirPath)(async (prefixWithDir) => {
-          await fs.writeFile(
-            prefixWithDir(fileName),
-            'All your base are belong to us.',
-          )
+        await withScratchDir(dirPath)((prefixWithDir) => {
+          return fs.writeFile(prefixWithDir(fileName), 'All your base are belong to us.')
         })
 
         await assert.doesNotReject(fs.access(dirPath))
@@ -61,11 +55,8 @@ describe('#src/utils/fs', () => {
         const fileName = 'doge.py'
 
         await fs.mkdir(dirPath)
-        await withScratchDir(dirPath)(async (prefixWithDir) => {
-          await fs.writeFile(
-            prefixWithDir(fileName),
-            'print(\'Wow, such fren, very noyce.\')',
-          )
+        await withScratchDir(dirPath)((prefixWithDir) => {
+          return fs.writeFile(prefixWithDir(fileName), 'print(\'Wow, such fren, very noyce.\')')
         })
 
         await assert.doesNotReject(fs.access(join(dirPath, fileName)))
@@ -102,8 +93,8 @@ describe('#src/utils/fs', () => {
         false,
       )
       assert.deepStrictEqual(
-        await ifPathExists(nonExistentPath, noop, ['wow', 'such', 'fail']),
-        ['wow', 'such', 'fail'],
+        await ifPathExists(nonExistentPath, noop, 'Wow, such fail, very bad.'),
+        'Wow, such fail, very bad.',
       )
     })
   })
@@ -191,6 +182,7 @@ describe('#src/utils/fs', () => {
         await fs.writeFile(filePath, 'Don’t mind me, I’m going away.')
         await rmDir(dirPath)
 
+        await assert.rejects(fs.access(filePath))
         await assert.rejects(fs.access(dirPath))
       })
     })
