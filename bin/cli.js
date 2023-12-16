@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import 'dotenv/config'
 import { docopt } from 'docopt'
 import microgen from '#src/main'
 

@@ -6,7 +6,7 @@
   "main": "src/main.js",
   "imports": {
     "#src/*": "./src/*.js",
-    "#tests/helpers": "./tests/helpers.js"
+    "#tests/helpers": "./tests/_helpers.js"
   },
   "bin": {
     "microgen": "./bin/cli.js"
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "docopt": "^0.6.2",
+    "dotenv": "^16.3.1",
     "pug": "^3.0.2"
   }
 }
