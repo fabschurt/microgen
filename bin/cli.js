@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { docopt } from 'docopt'
-import microgen from '#src/microgen'
+import microgen from '#src/main'
 
 const params = docopt(`
 A minimalist staticgen for generating simple, single-page websites.
