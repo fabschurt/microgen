@@ -1,3 +1,5 @@
+Microgen can be used to generate simple one-page websites, résumés, etc.
+
 ## Usage
 
 Given the following project structure:
@@ -27,14 +29,11 @@ npx github:fabschurt/microgen src dist
 * parse the data from `src/data.json`, pass it to the `src/index.pug` template,
 and finally render the whole thing as `dist/index.html`.
 
-## Why?
-
-I mainly use this package to generate some very simple HTML/CSS content that I
-can then open in a browser and print to PDF, for example.
-
 ## TODO
 
 - [x] Add a CLI usage message
 - [ ] Write a detailed CLI usage in the README
 - [ ] Add some CLI logging and user-friendly exception catching
+- [ ] Standardize the coding standards
+- [ ] Write JSDoc blocks
 - [ ] Write missing tests
