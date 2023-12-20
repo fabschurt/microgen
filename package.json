@@ -3,13 +3,13 @@
   "author": "Fabien Schurter <hello@fabschurt.dev>",
   "license": "MIT",
   "type": "module",
-  "main": "src/microgen.js",
+  "main": "src/main.js",
   "imports": {
     "#src/*": "./src/*.js",
     "#tests/helpers": "./tests/helpers.js"
   },
   "bin": {
-    "microgen": "./bin/build.js"
+    "microgen": "./bin/cli.js"
   },
   "scripts": {
     "test": "node --test --test-reporter=spec tests"
