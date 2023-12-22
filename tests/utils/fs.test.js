@@ -11,9 +11,9 @@ import {
   writeFile,
   copyDir,
   rmDir,
-} from '#src/lib/utils/fs'
+} from '#src/utils/fs'
 
-describe('#src/lib/utils/fs', () => {
+describe('#src/utils/fs', () => {
   describe('withDir()', () => {
     it('executes a callback that will be passed a dir-path prefixer', async () => {
       await withTempDir(async (prefixWithTempDir) => {
@@ -44,7 +44,6 @@ describe('#src/lib/utils/fs', () => {
           return fs.writeFile(prefixWithDir(fileName), 'All your base are belong to us.')
         })
 
-        await assert.doesNotReject(fs.access(dirPath))
         await assert.doesNotReject(fs.access(join(dirPath, fileName)))
       })
     })

@@ -1,3 +1,7 @@
+import { parseProjectData, mergeDataWithEnvVars } from '#src/domain/data'
+import { parseProjectTranslations } from '#src/domain/i18n'
+import { renderProjectIndex, copyProjectAssetsDir } from '#src/domain/assets'
+import { parseJSONFile } from '#src/utils/json'
 import {
   withDir,
   withScratchDir,
@@ -6,14 +10,38 @@ import {
   writeFile,
   copyDir,
   rmDir,
-} from '#src/lib/utils/fs'
-import { parseData, renderIndex, copyAssetDir } from '#src/lib/build'
-import { parseDataFromJsonFile, parseDataFromEnv } from '#src/lib/data'
-import { parseTranslations } from '#src/lib/i18n'
-import { parseJson } from '#src/lib/utils/json'
-import renderTemplate from '#src/lib/renderTemplate/pug'
+} from '#src/utils/fs'
+import {
+  deepCloneObject,
+  transformObjectValues,
+  cleanUpObjectList,
+  mergeObjectList,
+} from '#src/utils/object'
+import renderTemplate from '#src/vendor/renderTemplate/pug'
+import { render as renderPug } from 'pug'
 
-export default async function microgen(
+function parseData(parseJSONFile, withSrcDir, lang = null, envVars = []) {
+  return Promise.all([
+    parseProjectData(parseJSONFile, withSrcDir)
+      .then((data) => mergeDataWithEnvVars(
+        deepCloneObject,
+        transformObjectValues,
+        data,
+        envVars,
+      ))
+    ,
+    lang
+      ? (
+        parseProjectTranslations(parseJSONFile, withSrcDir, lang)
+          .then((dictionary) => ({ __: dictionary }))
+      ) : {}
+    ,
+  ])
+    .then(cleanUpObjectList)
+    .then(mergeObjectList)
+}
+
+export default async function main(
   srcDirPath,
   buildDirPath,
   lang = null,
@@ -26,20 +54,29 @@ export default async function microgen(
     withScratchDir(buildDirPath),
   ])
 
-  const data = await parseData(
-    withSrcDir,
-    ifPathExists,
-    readFile,
-    parseJson,
-    parseDataFromJsonFile,
-    parseDataFromEnv,
-    parseTranslations,
-    lang,
-    envVars,
+  return (
+    parseData(
+      (filePath) => parseJSONFile(ifPathExists, readFile, filePath),
+      withSrcDir,
+      lang,
+      envVars,
+    )
+      .then((data) => (
+        Promise.all([
+          renderProjectIndex(
+            withSrcDir,
+            withBuildDir,
+            writeFile,
+            (templateBasePath, data) => renderTemplate(renderPug, readFile, templateBasePath, data),
+            data,
+          ),
+          copyProjectAssetsDir(
+            withSrcDir,
+            withBuildDir,
+            copyDir,
+            ifPathExists,
+          ),
+        ])
+      ))
   )
-
-  return Promise.all([
-    renderIndex(withSrcDir, withBuildDir, readFile, writeFile, renderTemplate, data),
-    copyAssetDir(withSrcDir, withBuildDir, copyDir, ifPathExists),
-  ])
 }

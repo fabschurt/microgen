@@ -36,4 +36,4 @@ and finally render the whole thing as `dist/index.html`.
 - [ ] Add some CLI logging and user-friendly exception catching
 - [ ] Standardize the coding standards
 - [ ] Write JSDoc blocks
-- [ ] Write missing tests
+- [x] Write missing tests

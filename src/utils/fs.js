@@ -1,3 +1,4 @@
+import assert from 'node:assert'
 import * as fs from 'node:fs/promises'
 import { join } from 'node:path'
 
@@ -58,9 +59,7 @@ export function copyDir(srcPath, destPath) {
 }
 
 export function rmDir(path) {
-  if (path === '/') {
-    throw new AssertionError('Removing the filesystem’s root is not allowed.')
-  }
+  assert.notStrictEqual(path, '/', 'Removing the filesystem’s root is not allowed.')
 
   return fs.rm(path, { recursive: true })
 }
