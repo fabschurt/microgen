@@ -5,6 +5,7 @@ import {
   transformObjectValues,
   cleanUpObjectList,
   mergeObjectList,
+  accessObjectProp,
 } from '#src/utils/object'
 
 describe('#src/utils/object', () => {
@@ -170,6 +171,46 @@ describe('#src/utils/object', () => {
             surname: 'Doe',
           }
         }
+      )
+    })
+  })
+
+  describe('accessObjectProp', () => {
+    it('reads an object’s nested property, whose path is passed as a string', () => {
+      const obj = {
+        foo: 'yes',
+        bar: {
+          baz: {
+            stuff: 'mess',
+          },
+          biz: 'buzz',
+        },
+      }
+
+      assert.strictEqual(accessObjectProp(obj, 'bar.baz.stuff'), 'mess')
+    })
+
+    it('throws if the property path is invalid', () => {
+      assert.throws(
+        () => accessObjectProp({}, '379&239--'),
+        assert.AssertionError,
+      )
+    })
+
+    it('throws if one of the nested properties does not exist or is not an object', () => {
+      const obj = {
+        foo: {
+          bar: 'baz',
+        },
+      }
+
+      assert.throws(
+        () => accessObjectProp(obj, 'foo.stuff'),
+        RangeError,
+      )
+      assert.throws(
+        () => accessObjectProp(obj, 'foo.bar.stuff'),
+        TypeError,
       )
     })
   })
