@@ -44,6 +44,7 @@ describe('#src/main', () => {
         await fs.writeFile(transFilePath, `
 {
   "greetings": "Hello",
+  "full_name": "%s %s",
   "occupation": {
     "dev": "developer",
     "fireman": "firefighter"
@@ -53,9 +54,11 @@ describe('#src/main', () => {
         await fs.writeFile(indexTemplatePath, `
 doctype html
 html
+  head
+    title Some meaningless title
   body
-    p #{__.greetings}! I’m #{id.first_name} #{id.last_name}, I’m #{id.age} years old, and I live in #{id.city}.
-    p I work as a #{__.occupation.dev}, but I’ve always dreamt about being a #{__.occupation.fireman}.
+    p #{_.trans('greetings')}! I’m #{_.trans('full_name', id.first_name, id.last_name)}, I’m #{id.age} years old, and I live in #{id.city}.
+    p I work as a #{_.trans('occupation.dev')}, but I’ve always dreamt about being a #{_.trans('occupation.fireman')}.
 `)
         await fs.writeFile(join(srcDirPath, mainJSFileBasePath), mainJSFileContent)
         await fs.writeFile(join(srcDirPath, mainCSSFileBasePath), mainCSSFileContent)
@@ -73,6 +76,9 @@ html
           await fs.readFile(indexOutputPath, { encoding: 'utf8' }),
           '<!DOCTYPE html>' +
           '<html>' +
+            '<head>' +
+              '<title>Some meaningless title</title>' +
+            '</head>' +
             '<body>' +
               '<p>Hello! I’m John Smith, I’m 35 years old, and I live in New York City.</p>' +
               '<p>I work as a developer, but I’ve always dreamt about being a firefighter.</p>' +

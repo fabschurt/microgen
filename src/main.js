@@ -16,8 +16,10 @@ import {
   transformObjectValues,
   cleanUpObjectList,
   mergeObjectList,
+  accessObjectProp,
 } from '#src/utils/object'
 import renderTemplate from '#src/vendor/renderTemplate/pug'
+import { format } from 'node:util'
 import { render as renderPug } from 'pug'
 
 function parseData(parseJSONFile, withSrcDir, lang = null, envVars = []) {
@@ -33,7 +35,16 @@ function parseData(parseJSONFile, withSrcDir, lang = null, envVars = []) {
     lang
       ? (
         parseProjectTranslations(parseJSONFile, withSrcDir, lang)
-          .then((dictionary) => ({ __: dictionary }))
+          .then((dictionary) => ({
+            _: {
+              trans: (transKey, ...args) => (
+                format(
+                  accessObjectProp(dictionary, transKey),
+                  ...args,
+                )
+              )
+            },
+          }))
       ) : {}
     ,
   ])
