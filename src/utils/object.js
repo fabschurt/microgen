@@ -1,5 +1,19 @@
+import { AssertionError } from 'node:assert'
+
+function valueIsObject(value) {
+  return typeof value !== 'undefined' && value.constructor.name === 'Object'
+}
+
+function valueIsArray(value) {
+  return typeof value !== 'undefined' && value.constructor.name === 'Array'
+}
+
 function valueIsComposite(value) {
-  return ['Object', 'Array'].includes(value.constructor.name)
+  return valueIsObject(value) || valueIsArray(value)
+}
+
+function testPropPathValidity(propPath) {
+  return /^(?<currentKey>[a-z_]+)(?<rest>(?:\.[a-z_]+)*)$/i.exec(propPath)
 }
 
 export function deepCloneObject(obj) {
@@ -28,4 +42,31 @@ export function cleanUpObjectList(objectList) {
 
 export function mergeObjectList(objectList) {
   return Object.assign({}, ...objectList)
+}
+
+export function accessObjectProp(obj, propPath) {
+  const match = testPropPathValidity(propPath)
+
+  if (match === null) {
+    throw new AssertionError({ message: `The property path «${propPath}» is invalid.` })
+  }
+
+  const currentKey = match.groups.currentKey
+
+  if (typeof obj[currentKey] === 'undefined') {
+    throw new RangeError(`The key «${currentKey}» does not exist in the current object tree.`)
+  }
+
+  const rest = match.groups.rest
+  const hasRest = Boolean(rest.length)
+
+  if (hasRest && !valueIsObject(obj[currentKey])) {
+    throw new TypeError(`The value at key «${currentKey}» is not an object and can’t be traversed.`)
+  }
+
+  return (
+    hasRest
+      ? accessObjectProp(obj[currentKey], rest.substring(1))
+      : obj[currentKey]
+  )
 }
