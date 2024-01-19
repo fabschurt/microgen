@@ -22,7 +22,7 @@ export function deepCloneObject(obj) {
 
 export function transformObjectValues(obj, cb) {
   if (!valueIsComposite(obj)) {
-    throw new TypeError('This function only supports plain Object and Array objects.')
+    throw new TypeError('Only composite values can be transformed.')
   }
 
   Object.keys(obj).forEach((key) => {
@@ -67,4 +67,22 @@ export function accessObjectProp(obj, propPath) {
       ? accessObjectProp(obj[currentKey], rest.substring(1))
       : obj[currentKey]
   )
+}
+
+export function dotFlattenObject(obj) {
+  assert(valueIsComposite(obj), 'Only composite values can be flattened.')
+
+  const output = {}
+
+  Object.entries(obj).forEach(([prop, val]) => {
+    if (valueIsComposite(val)) {
+      Object.entries(dotFlattenObject(val)).forEach(([subProp, subVal]) => {
+        output[`${prop}.${subProp}`] = subVal
+      })
+    } else {
+      output[prop] = val
+    }
+  })
+
+  return output
 }
