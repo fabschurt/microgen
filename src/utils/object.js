@@ -1,4 +1,4 @@
-import { AssertionError } from 'node:assert'
+import assert from 'node:assert'
 
 function valueIsObject(value) {
   return typeof value !== 'undefined' && value.constructor.name === 'Object'
@@ -47,9 +47,7 @@ export function mergeObjectList(objectList) {
 export function accessObjectProp(obj, propPath) {
   const match = testPropPathValidity(propPath)
 
-  if (match === null) {
-    throw new AssertionError({ message: `The property path «${propPath}» is invalid.` })
-  }
+  assert.notStrictEqual(match, null, `The property path «${propPath}» is invalid.` )
 
   const currentKey = match.groups.currentKey
 
