@@ -44,7 +44,7 @@ describe('#src/main', () => {
         await fs.writeFile(transFilePath, `
 {
   "greetings": "Hello",
-  "full_name": "%s %s",
+  "full_name": "{first_name} {last_name}",
   "occupation": {
     "dev": "developer",
     "fireman": "firefighter"
@@ -57,7 +57,7 @@ html
   head
     title Some meaningless title
   body
-    p #{_.trans('greetings')}! I’m #{_.trans('full_name', id.first_name, id.last_name)}, I’m #{id.age} years old, and I live in #{id.city}.
+    p #{_.trans('greetings')}! I’m #{_.trans('full_name', { first_name: id.first_name, last_name: id.last_name })}, I’m #{id.age} years old, and I live in #{id.city}.
     p I work as a #{_.trans('occupation.dev')}, but I’ve always dreamt about being a #{_.trans('occupation.fireman')}.
 `)
         await fs.writeFile(join(srcDirPath, mainJSFileBasePath), mainJSFileContent)

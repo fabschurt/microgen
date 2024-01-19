@@ -45,7 +45,8 @@ function parseData(parseJSONFile, withSrcDir, lang = null, envVars = []) {
               )
             },
           }))
-      ) : {}
+      )
+      : {}
     ,
   ])
     .then(cleanUpObjectList)

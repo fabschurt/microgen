@@ -5,7 +5,12 @@ const LANG_PATTERN = /^[a-z]{2}$/
 const TRANSLATION_DIR_PATH = 'i18n'
 const TRANSLATION_FILE_EXT = '.json'
 
-export function parseProjectTranslations(parseJSONFile, withSrcDir, lang) {
+export function parseProjectTranslations(
+  parseJSONFile,
+  dotFlattenObject,
+  withSrcDir,
+  lang,
+) {
   assert.match(lang, LANG_PATTERN, `'${lang}' is not a valid language code.`)
 
   return withSrcDir((prefixWithSrcDir) => {
@@ -14,6 +19,6 @@ export function parseProjectTranslations(parseJSONFile, withSrcDir, lang) {
       lang + TRANSLATION_FILE_EXT,
     )
 
-    return parseJSONFile(translationFilePath)
+    return parseJSONFile(translationFilePath).then(dotFlattenObject)
   })
 }
