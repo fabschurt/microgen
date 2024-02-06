@@ -4,9 +4,9 @@ import { withTempDir } from '#tests/helpers'
 import * as fs from 'node:fs/promises'
 import { readFile } from '#src/utils/fs'
 import { render as renderPug } from 'pug'
-import renderTemplate from '#src/vendor/renderTemplate/pug'
+import renderTemplate from '#src/adapter/renderTemplate/pug'
 
-describe('#src/vendor/renderTemplate/pug', () => {
+describe('#src/adapter/renderTemplate/pug', () => {
   describe('renderTemplate()', () => {
     it('renders a Pug template as HTML', async () => {
       await withTempDir(async (prefixWithTempDir) => {

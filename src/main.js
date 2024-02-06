@@ -18,7 +18,7 @@ import {
   mergeObjectList,
   accessObjectProp,
 } from '#src/utils/object'
-import renderTemplate from '#src/vendor/renderTemplate/pug'
+import renderTemplate from '#src/adapter/renderTemplate/pug'
 import { format } from 'node:util'
 import { render as renderPug } from 'pug'
 
