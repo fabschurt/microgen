@@ -5,7 +5,7 @@ import { randomUUID } from 'node:crypto'
 
 const TMP_DIR_PREFIX = 'microgen-tests-'
 
-export async function withTempDir(cb) {
+export const withTempDir = async (cb) => {
   const tempDirPath = await fs.mkdtemp(join(tmpdir(), TMP_DIR_PREFIX))
   const prefixWithDir = (relativePath = '') => join(tempDirPath, relativePath)
 
@@ -16,8 +16,6 @@ export async function withTempDir(cb) {
   }
 }
 
-export function generateNonExistentPath() {
-  return join(tmpdir(), randomUUID())
-}
+export const generateNonExistentPath = () => join(tmpdir(), randomUUID())
 
-export function noop() {}
+export const noop = () => {}

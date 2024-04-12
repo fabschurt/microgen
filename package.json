@@ -1,12 +1,12 @@
 {
   "name": "@fabschurt/microgen",
   "author": "Fabien Schurter",
-  "license": "MIT",
   "type": "module",
-  "main": "src/main.js",
+  "license": "MIT",
+  "main": "./src/main.js",
   "imports": {
     "#src/*": "./src/*.js",
-    "#tests/helpers": "./tests/_helpers.js"
+    "#tests/helpers": "./tests/.lib/helpers.js"
   },
   "bin": {
     "microgen": "./bin/cli.js"

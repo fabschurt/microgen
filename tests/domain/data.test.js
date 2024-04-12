@@ -19,7 +19,7 @@ describe('#src/domain/data', () => {
         await fs.writeFile(dataFilePath, '{"stuff": ["thing", "trinket", "gizmo"]}')
 
         const result = await parseProjectData(
-          (filePath) => parseJSONFile(ifPathExists, readFile, filePath),
+          parseJSONFile(ifPathExists, readFile),
           withDir(srcDirPath),
         )
 
@@ -63,12 +63,7 @@ describe('#src/domain/data', () => {
         LANG: 'fr',
       }
 
-      const result = mergeDataWithEnvVars(
-        deepCloneObject,
-        transformObjectValues,
-        data,
-        envVars,
-      )
+      const result = mergeDataWithEnvVars(deepCloneObject, transformObjectValues)(data, envVars)
 
       assert.deepStrictEqual(
         result,
