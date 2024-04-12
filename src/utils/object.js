@@ -63,3 +63,21 @@ export const accessObjectProp = (obj, propPath) => {
       : obj[currentKey]
   )
 }
+
+export const dotFlattenObject = (obj) => {
+  assert(valueIsComposite(obj), 'Only composite values can be flattened.')
+
+  const output = {}
+
+  Object.entries(obj).forEach(([prop, val]) => {
+    if (valueIsComposite(val)) {
+      Object.entries(dotFlattenObject(val)).forEach(([subProp, subVal]) => {
+        output[`${prop}.${subProp}`] = subVal
+      })
+    } else {
+      output[prop] = val
+    }
+  })
+
+  return output
+}

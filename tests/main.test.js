@@ -34,9 +34,11 @@ describe('#src/main', () => {
         await fs.writeFile(dataFilePath, `
 {
   "id": {
-    "first_name": "John",
-    "last_name": "Smith",
-    "age": 35,
+    "firstName": "John",
+    "lastName": "Smith"
+  },
+  "age": 35,
+  "location": {
     "city": "%SECRET_CITY%"
   }
 }
@@ -44,7 +46,7 @@ describe('#src/main', () => {
         await fs.writeFile(transFilePath, `
 {
   "greetings": "Hello",
-  "full_name": "%s %s",
+  "fullName": "{firstName} {lastName}",
   "occupation": {
     "dev": "developer",
     "fireman": "firefighter"
@@ -57,8 +59,8 @@ html
   head
     title Some meaningless title
   body
-    p #{_.trans('greetings')}! I’m #{_.trans('full_name', id.first_name, id.last_name)}, I’m #{id.age} years old, and I live in #{id.city}.
-    p I work as a #{_.trans('occupation.dev')}, but I’ve always dreamt about being a #{_.trans('occupation.fireman')}.
+    p #{_t('greetings')}! I’m #{_t('fullName', { firstName: id.firstName, lastName: id.lastName })}, I’m #{age} years old, and I live in #{location.city}.
+    p I work as a #{_t('occupation.dev')}, but I’ve always dreamt about being a #{_t('occupation.fireman')}.
 `)
         await fs.writeFile(join(srcDirPath, mainJSFileBasePath), mainJSFileContent)
         await fs.writeFile(join(srcDirPath, mainCSSFileBasePath), mainCSSFileContent)
