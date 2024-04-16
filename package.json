@@ -21,6 +21,7 @@
   "dependencies": {
     "docopt": "^0.6.2",
     "dotenv": "^16.3.1",
+    "intl-messageformat": "^10.5.11",
     "pug": "^3.0.2"
   }
 }

@@ -6,6 +6,7 @@ import {
   cleanUpObjectList,
   mergeObjectList,
   accessObjectProp,
+  dotFlattenObject,
 } from '#src/utils/object'
 
 describe('#src/utils/object', () => {
@@ -211,6 +212,47 @@ describe('#src/utils/object', () => {
       assert.throws(
         () => accessObjectProp(obj, 'foo.bar.stuff'),
         TypeError,
+      )
+    })
+  })
+
+  describe('dotFlattenObject', () => {
+    it('flattens an object into key-value pairs', () => {
+      const flatObject = dotFlattenObject({
+        info: {
+          first_name: 'Foo',
+          last_name: 'Bar',
+        },
+        data: {
+          secret: {
+            password: '1234',
+          },
+          stuff: [
+            'foo',
+            'bar',
+            'baz',
+          ],
+        },
+      })
+
+      assert.deepStrictEqual(flatObject, {
+        'info.first_name': 'Foo',
+        'info.last_name': 'Bar',
+        'data.secret.password': '1234',
+        'data.stuff.0': 'foo',
+        'data.stuff.1': 'bar',
+        'data.stuff.2': 'baz',
+      })
+    })
+
+    it('throws if not passed a composite value', () => {
+      assert.throws(
+        () => dotFlattenObject(42),
+        assert.AssertionError,
+      )
+      assert.throws(
+        () => dotFlattenObject('Hello!'),
+        assert.AssertionError,
       )
     })
   })

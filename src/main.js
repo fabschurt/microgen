@@ -17,10 +17,12 @@ import {
   cleanUpObjectList,
   mergeObjectList,
   accessObjectProp,
+  dotFlattenObject,
 } from '#src/utils/object'
 import { renderTemplate } from '#src/adapter/pug'
-import { format } from 'node:util'
+import { translateString } from '#src/adapter/icu'
 import { render as renderPug } from 'pug'
+import { IntlMessageFormat } from 'intl-messageformat'
 
 export default async function main(
   srcDirPath,
@@ -49,17 +51,8 @@ export default async function main(
       ,
       lang
         ? (
-          parseProjectTranslations(_parseJSONFile, withSrcDir)(lang)
-            .then((dictionary) => ({
-              _: {
-                trans: (msgID, ...args) => (
-                  format(
-                    accessObjectProp(dictionary, msgID),
-                    ...args,
-                  )
-                )
-              },
-            }))
+          parseProjectTranslations(_parseJSONFile, withSrcDir, dotFlattenObject)(lang)
+            .then((dictionary) => ({ _t: translateString(IntlMessageFormat, dictionary, lang) }))
         )
         : {}
       ,

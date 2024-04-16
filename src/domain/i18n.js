@@ -6,7 +6,7 @@ const TRANSLATION_DIR_PATH = 'i18n'
 const TRANSLATION_FILE_EXT = '.json'
 
 export const parseProjectTranslations = (
-  (parseJSONFile, withSrcDir) => (
+  (parseJSONFile, withSrcDir, dotFlattenObject) => (
     (lang) => {
       assert.match(lang, LANG_PATTERN, `\`${lang}\` is not a valid language code.`)
 
@@ -16,7 +16,10 @@ export const parseProjectTranslations = (
           lang + TRANSLATION_FILE_EXT,
         )
 
-        return parseJSONFile(translationFilePath)
+        return (
+          parseJSONFile(translationFilePath)
+            .then(dotFlattenObject)
+        )
       })
     }
   )
