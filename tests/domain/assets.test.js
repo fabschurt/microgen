@@ -21,7 +21,7 @@ describe('#src/domain/assets', () => {
 
         const renderTemplate = async (templatePath, data) => {
           const template = await fs.readFile(
-            `${templatePath}.tpl`,
+            templatePath + '.tpl',
             { encoding: 'utf8' },
           )
 
@@ -36,11 +36,10 @@ describe('#src/domain/assets', () => {
           withDir(buildDirPath),
           writeFile,
           renderTemplate,
-          {
-            firstName: 'John',
-            lastName: 'Doe',
-          },
-        )
+        )({
+          firstName: 'John',
+          lastName: 'Doe',
+        })
 
         assert.strictEqual(
           await fs.readFile(indexOutputPath, { encoding: 'utf8' }),

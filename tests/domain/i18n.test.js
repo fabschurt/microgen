@@ -21,18 +21,19 @@ describe('#src/domain/i18n', () => {
         await fs.writeFile(file2Path, '{"greetings": "Hello"}')
 
         const withSrcDir = withDir(srcDirPath)
-        const _parseJSONFile = (filePath) => parseJSONFile(ifPathExists, readFile, filePath)
+        const _parseJSONFile = parseJSONFile(ifPathExists, readFile)
+        const _parseProjectTranslations = parseProjectTranslations(_parseJSONFile, withSrcDir)
 
         assert.deepStrictEqual(
-          await parseProjectTranslations(_parseJSONFile, withSrcDir, 'fr'),
+          await _parseProjectTranslations('fr'),
           { greetings: 'Bonjour' },
         )
         assert.deepStrictEqual(
-          await parseProjectTranslations(_parseJSONFile, withSrcDir, 'en'),
+          await _parseProjectTranslations('en'),
           { greetings: 'Hello' },
         )
         assert.deepStrictEqual(
-          await parseProjectTranslations(_parseJSONFile, withSrcDir, 'de'),
+          await _parseProjectTranslations('de'),
           {},
         )
       })
@@ -40,7 +41,7 @@ describe('#src/domain/i18n', () => {
 
     it('throws if an invalid `lang` parameter is passed', () => {
       assert.throws(
-        () => parseProjectTranslations(noop, noop, 'fAiL'),
+        () => parseProjectTranslations(noop, noop)('fAiL'),
         assert.AssertionError,
       )
     })

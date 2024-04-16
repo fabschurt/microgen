@@ -18,39 +18,9 @@ import {
   mergeObjectList,
   accessObjectProp,
 } from '#src/utils/object'
-import renderTemplate from '#src/adapter/renderTemplate/pug'
+import { renderTemplate } from '#src/adapter/pug'
 import { format } from 'node:util'
 import { render as renderPug } from 'pug'
-
-function parseData(parseJSONFile, withSrcDir, lang = null, envVars = []) {
-  return Promise.all([
-    parseProjectData(parseJSONFile, withSrcDir)
-      .then((data) => mergeDataWithEnvVars(
-        deepCloneObject,
-        transformObjectValues,
-        data,
-        envVars,
-      ))
-    ,
-    lang
-      ? (
-        parseProjectTranslations(parseJSONFile, withSrcDir, lang)
-          .then((dictionary) => ({
-            _: {
-              trans: (transKey, ...args) => (
-                format(
-                  accessObjectProp(dictionary, transKey),
-                  ...args,
-                )
-              )
-            },
-          }))
-      ) : {}
-    ,
-  ])
-    .then(cleanUpObjectList)
-    .then(mergeObjectList)
-}
 
 export default async function main(
   srcDirPath,
@@ -58,6 +28,8 @@ export default async function main(
   lang = null,
   envVars = {},
 ) {
+  const _parseJSONFile = parseJSONFile(ifPathExists, readFile)
+
   await ifPathExists(buildDirPath, rmDir)
 
   const [withSrcDir, withBuildDir] = await Promise.all([
@@ -66,21 +38,42 @@ export default async function main(
   ])
 
   return (
-    parseData(
-      (filePath) => parseJSONFile(ifPathExists, readFile, filePath),
-      withSrcDir,
-      lang,
-      envVars,
-    )
+    Promise.all([
+      parseProjectData(_parseJSONFile, withSrcDir)
+        .then(
+          (data) => mergeDataWithEnvVars(
+            deepCloneObject,
+            transformObjectValues,
+          )(data, envVars)
+        )
+      ,
+      lang
+        ? (
+          parseProjectTranslations(_parseJSONFile, withSrcDir)(lang)
+            .then((dictionary) => ({
+              _: {
+                trans: (msgID, ...args) => (
+                  format(
+                    accessObjectProp(dictionary, msgID),
+                    ...args,
+                  )
+                )
+              },
+            }))
+        )
+        : {}
+      ,
+    ])
+      .then(cleanUpObjectList)
+      .then(mergeObjectList)
       .then((data) => (
         Promise.all([
           renderProjectIndex(
             withSrcDir,
             withBuildDir,
             writeFile,
-            (templateBasePath, data) => renderTemplate(renderPug, readFile, templateBasePath, data),
-            data,
-          ),
+            renderTemplate(renderPug, readFile),
+          )(data),
           copyProjectAssetsDir(
             withSrcDir,
             withBuildDir,

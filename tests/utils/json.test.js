@@ -13,8 +13,10 @@ describe('#src/utils/json', () => {
 
         await fs.writeFile(filePath, '{"person": {"name": "Jamez", "surname": "Bong"}}')
 
+        const _parseJSONFile = parseJSONFile(ifPathExists, readFile)
+
         assert.deepStrictEqual(
-          await parseJSONFile(ifPathExists, readFile, filePath),
+          await _parseJSONFile(filePath),
           {
             person: {
               name: 'Jamez',
@@ -23,7 +25,7 @@ describe('#src/utils/json', () => {
           },
         )
         assert.deepStrictEqual(
-          await parseJSONFile(ifPathExists, readFile, generateNonExistentPath()),
+          await _parseJSONFile(generateNonExistentPath()),
           {},
         )
       })

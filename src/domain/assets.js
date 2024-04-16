@@ -2,38 +2,36 @@ const INDEX_TEMPLATE_BASENAME = 'index'
 const INDEX_OUTPUT_NAME = 'index.html'
 const ASSETS_DIR_NAME = 'assets'
 
-export function renderProjectIndex(
-  withSrcDir,
-  withBuildDir,
-  writeFile,
-  renderTemplate,
-  data,
-) {
-  return withSrcDir((prefixWithSrcDir) => {
-    return withBuildDir(async (prefixWithBuildDir) => {
-      return writeFile(
-        prefixWithBuildDir(INDEX_OUTPUT_NAME),
-        await renderTemplate(
-          prefixWithSrcDir(INDEX_TEMPLATE_BASENAME),
-          data,
-        ),
-      )
-    })
-  })
-}
+export const renderProjectIndex = (
+  (withSrcDir, withBuildDir, writeFile, renderTemplate) => (
+    (data) => (
+      withSrcDir((prefixWithSrcDir) => (
+        withBuildDir(async (prefixWithBuildDir) => (
+          writeFile(
+            prefixWithBuildDir(INDEX_OUTPUT_NAME),
+            await renderTemplate(
+              prefixWithSrcDir(INDEX_TEMPLATE_BASENAME),
+              data,
+            ),
+          )
+        ))
+      ))
+    )
+  )
+)
 
-export function copyProjectAssetsDir(
+export const copyProjectAssetsDir = (
   withSrcDir,
   withBuildDir,
   copyDir,
   ifPathExists,
-) {
-  return withSrcDir((prefixWithSrcDir) => {
-    return withBuildDir((prefixWithBuildDir) => {
-      return ifPathExists(
+) => (
+  withSrcDir((prefixWithSrcDir) => (
+    withBuildDir((prefixWithBuildDir) => (
+      ifPathExists(
         prefixWithSrcDir(ASSETS_DIR_NAME),
         (dirPath) => copyDir(dirPath, prefixWithBuildDir(ASSETS_DIR_NAME)),
       )
-    })
-  })
-}
+    ))
+  ))
+)
