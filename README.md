@@ -34,6 +34,5 @@ and finally render the whole thing as `dist/index.html`.
 - [x] Add a CLI usage message
 - [ ] Write an updated and detailed CLI usage in the README
 - [ ] Add some CLI logging and user-friendly exception catching
-- [ ] Standardize the coding standards
 - [ ] Write JSDoc blocks
 - [x] Write missing tests
