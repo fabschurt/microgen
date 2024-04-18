@@ -59,8 +59,8 @@ html
   head
     title Some meaningless title
   body
-    p #{_t('greetings')}! I’m #{_t('fullName', { firstName: id.firstName, lastName: id.lastName })}, I’m #{age} years old, and I live in #{location.city}.
-    p I work as a #{_t('occupation.dev')}, but I’ve always dreamt about being a #{_t('occupation.fireman')}.
+    p #{_.t('greetings')}! I’m #{_.t('fullName', { firstName: id.firstName, lastName: id.lastName })}, I’m #{age} years old, and I live in #{location.city}.
+    p I work as a #{_.t('occupation.dev')}, but I’ve always dreamt about being a #{_.t('occupation.fireman')}.
 `)
         await fs.writeFile(join(srcDirPath, mainJSFileBasePath), mainJSFileContent)
         await fs.writeFile(join(srcDirPath, mainCSSFileBasePath), mainCSSFileContent)
