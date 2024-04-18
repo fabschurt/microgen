@@ -14,30 +14,30 @@ describe('#src/adapter/icu', () => {
         account_balance: 'I have {balance, number} moneyz on my bank account.'
       }
 
-      const _t = translateString(IntlMessageFormat, dictionary)
+      const trans = translateString(IntlMessageFormat, dictionary)
 
       it('supports param placeholders', () => {
         assert.strictEqual(
-          _t('greetings', { name: 'John Smith' }),
+          trans('greetings', { name: 'John Smith' }),
           'Hello, my name is John Smith.',
         )
         assert.strictEqual(
-          _t('occupation', { job: 'smith', town: 'Smithtown' }),
+          trans('occupation', { job: 'smith', town: 'Smithtown' }),
           'I’m a smith, the best in Smithtown.',
         )
       })
 
       it('supports plural form', () => {
         assert.strictEqual(
-          _t('number_of_kids', { kidNum: 0 }),
+          trans('number_of_kids', { kidNum: 0 }),
           'I have no kids.',
         )
         assert.strictEqual(
-          _t('number_of_kids', { kidNum: 1 }),
+          trans('number_of_kids', { kidNum: 1 }),
           'I have a single child.',
         )
         assert.strictEqual(
-          _t('number_of_kids', { kidNum: 2 }),
+          trans('number_of_kids', { kidNum: 2 }),
           'I have 2 kids.',
         )
       })
@@ -46,11 +46,11 @@ describe('#src/adapter/icu', () => {
         const bastilleDay = new Date('1789-07-14')
 
         assert.strictEqual(
-          _t('bastille_day', { bastilleDay }, 'en-US'),
+          trans('bastille_day', { bastilleDay }, 'en-US'),
           'France’s Bastille Day was on July 14, 1789.',
         )
         assert.strictEqual(
-          _t('bastille_day', { bastilleDay }, 'fr-FR'),
+          trans('bastille_day', { bastilleDay }, 'fr-FR'),
           'France’s Bastille Day was on 14 juillet 1789.',
         )
       })
@@ -59,11 +59,11 @@ describe('#src/adapter/icu', () => {
         const balance = 12345.67
 
         assert.strictEqual(
-          _t('account_balance', { balance }, 'en-US'),
+          trans('account_balance', { balance }, 'en-US'),
           'I have 12,345.67 moneyz on my bank account.',
         )
         assert.strictEqual(
-          _t('account_balance', { balance }, 'fr-FR'),
+          trans('account_balance', { balance }, 'fr-FR'),
           'I have 12 345,67 moneyz on my bank account.',
         )
       })

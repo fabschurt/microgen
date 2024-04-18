@@ -52,7 +52,7 @@ export default async function main(
       lang
         ? (
           parseProjectTranslations(_parseJSONFile, withSrcDir, dotFlattenObject)(lang)
-            .then((dictionary) => ({ _t: translateString(IntlMessageFormat, dictionary, lang) }))
+            .then((dictionary) => ({ _: { t: translateString(IntlMessageFormat, dictionary, lang) } }))
         )
         : {}
       ,
