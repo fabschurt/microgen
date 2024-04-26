@@ -55,7 +55,7 @@ describe('#src/main', () => {
 `)
         await fs.writeFile(indexTemplatePath, `
 doctype html
-html
+html(lang=_.locale)
   head
     title Some meaningless title
   body
@@ -77,7 +77,7 @@ html
         assert.strictEqual(
           await fs.readFile(indexOutputPath, { encoding: 'utf8' }),
           '<!DOCTYPE html>' +
-          '<html>' +
+          '<html lang="en">' +
             '<head>' +
               '<title>Some meaningless title</title>' +
             '</head>' +
