@@ -30,14 +30,13 @@ export default async function main(
   lang = null,
   envVars = {},
 ) {
-  const _parseJSONFile = parseJSONFile(ifPathExists, readFile)
-
   await ifPathExists(buildDirPath, rmDir)
 
   const [withSrcDir, withBuildDir] = await Promise.all([
     withDir(srcDirPath),
     withScratchDir(buildDirPath),
   ])
+  const _parseJSONFile = parseJSONFile(ifPathExists, readFile)
 
   return (
     Promise.all([

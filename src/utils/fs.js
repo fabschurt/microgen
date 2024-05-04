@@ -1,15 +1,14 @@
-import assert from 'node:assert'
 import * as fs from 'node:fs/promises'
 import { join } from 'node:path'
+
+const prefixWithDir = (dirPath) => (relativePath = '') => join(dirPath, relativePath)
 
 export const withDir = (
   (dirPath) => (
     async (cb) => {
       await fs.access(dirPath)
 
-      const prefixWithDir = (relativePath = '') => join(dirPath, relativePath)
-
-      return cb(prefixWithDir)
+      return cb(prefixWithDir(dirPath))
     }
   )
 )
@@ -29,9 +28,7 @@ export const withScratchDir = (
 
       await fs.access(dirPath, fs.constants.W_OK)
 
-      const prefixWithDir = (relativePath = '') => join(dirPath, relativePath)
-
-      return cb(prefixWithDir)
+      return cb(prefixWithDir(dirPath))
     }
   )
 )
@@ -59,7 +56,9 @@ export const copyDir = (srcPath, destPath) => (
 )
 
 export const rmDir = (path) => {
-  assert.notStrictEqual(path, '/', 'Removing the filesystem’s root is not allowed.')
+  if (path === '/') {
+    throw new SystemError('Removing the filesystem’s root is not allowed.')
+  }
 
   return fs.rm(path, { recursive: true })
 }

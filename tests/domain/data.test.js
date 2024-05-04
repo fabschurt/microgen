@@ -10,7 +10,7 @@ import { parseProjectData, mergeDataWithEnvVars } from '#src/domain/data'
 
 describe('#src/domain/data', () => {
   describe('parseProjectData()', () => {
-    it('parses data from a `data.json` file at project root', async () => {
+    it('parses data from a `data.json` file at the project root', async () => {
       await withTempDir(async (prefixWithTempDir) => {
         const srcDirPath = prefixWithTempDir('src')
         const dataFilePath = join(srcDirPath, 'data.json')
@@ -46,7 +46,7 @@ describe('#src/domain/data', () => {
             42,
             '%SECRET_PHONE_NUMBER%',
             false,
-            'LANG'
+            'LANG',
           ],
         },
         cruft: {
@@ -55,6 +55,7 @@ describe('#src/domain/data', () => {
             lang: '%LANG%',
             phone: 'SECRET_PHONE_NUMBER',
           },
+          nil: '%NOPE%',
         },
       }
 
@@ -74,7 +75,7 @@ describe('#src/domain/data', () => {
               42,
               '+33700000000',
               false,
-              'LANG'
+              'LANG',
             ],
           },
           cruft: {
@@ -83,6 +84,7 @@ describe('#src/domain/data', () => {
               lang: 'fr',
               phone: 'SECRET_PHONE_NUMBER',
             },
+            nil: null,
           },
         },
       )

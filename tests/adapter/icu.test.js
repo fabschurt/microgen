@@ -11,7 +11,7 @@ describe('#src/adapter/icu', () => {
         occupation: 'I’m a {job}, the best in {town}.',
         number_of_kids: 'I have {kidNum, plural, =0 {no kids} =1 {a single child} other {# kids}}.',
         bastille_day: 'France’s Bastille Day was on {bastilleDay, date, ::yyyyMMMMdd}.',
-        account_balance: 'I have {balance, number} moneyz on my bank account.'
+        account_balance: 'I have {balance, number} moneyz on my bank account.',
       }
 
       const trans = translateString(IntlMessageFormat, dictionary)
@@ -65,6 +65,13 @@ describe('#src/adapter/icu', () => {
         assert.strictEqual(
           trans('account_balance', { balance }, 'fr-FR'),
           'I have 12 345,67 moneyz on my bank account.',
+        )
+      })
+
+      it('throws if the message ID does not exist in the dictionary', () => {
+        assert.throws(
+          () => trans('askdjww00--'),
+          RangeError,
         )
       })
     })

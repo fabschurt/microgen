@@ -78,8 +78,8 @@ describe('#src/utils/fs', () => {
       const nonExistentPath = generateNonExistentPath()
       let marker = 0
 
-      await ifPathExists('/', () => marker = 1)
-      await ifPathExists(nonExistentPath, () => marker = 2)
+      await ifPathExists('/', (_) => marker = 1)
+      await ifPathExists(nonExistentPath, (_) => marker = 2)
 
       assert.strictEqual(marker, 1)
     })
@@ -184,6 +184,10 @@ describe('#src/utils/fs', () => {
         await assert.rejects(fs.access(filePath))
         await assert.rejects(fs.access(dirPath))
       })
+    })
+
+    it('prevents the deletion of the filesystem’s root', {
+      skip: 'This is too scary to test 😱 (disk wipe hazard).',
     })
   })
 })

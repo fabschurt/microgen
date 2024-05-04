@@ -1,21 +1,14 @@
-import assert from 'node:assert'
+const PROP_PATH_PATTERN = /^(?<currentKey>[a-z_]+)(?<rest>(?:\.[a-z_]+)*)$/i
 
-const valueIsObject = (value) => (
-  typeof value !== 'undefined' &&
-  value.constructor.name === 'Object'
-)
+const valueIsObject = (value) => value.constructor?.name === 'Object'
 
-const valueIsArray = (value) => (
-  typeof value !== 'undefined' &&
-  value.constructor.name === 'Array'
-)
+const valueIsArray = (value) => value.constructor?.name === 'Array'
 
 const valueIsComposite = (value) => valueIsObject(value) || valueIsArray(value)
 
-const testPropPathValidity = (propPath) => (
-  /^(?<currentKey>[a-z_]+)(?<rest>(?:\.[a-z_]+)*)$/i
-    .exec(propPath)
-)
+const objectIsEmpty = (obj) => Object.keys(obj).length > 0
+
+const matchPropPath = (propPath) => propPath.match?.(PROP_PATH_PATTERN) ?? null
 
 export const deepCloneObject = (obj) => JSON.parse(JSON.stringify(obj))
 
@@ -35,37 +28,42 @@ export const transformObjectValues = (obj, cb) => {
   return obj
 }
 
-export const cleanUpObjectList = (objectList) => objectList.filter((obj) => Object.keys(obj).length)
+export const cleanUpObjectList = (objectList) => objectList.filter(objectIsEmpty)
 
 export const mergeObjectList = (objectList) => Object.assign({}, ...objectList)
 
 export const accessObjectProp = (obj, propPath) => {
-  const match = testPropPathValidity(propPath)
+  const match = matchPropPath(propPath)
 
-  assert.notStrictEqual(match, null, `The property path \`${propPath}\` is invalid.` )
+  if (match === null) {
+    throw new Error(`The property path \`${propPath}\` is invalid.` )
+  }
 
   const currentKey = match.groups.currentKey
 
-  if (typeof obj[currentKey] === 'undefined') {
+  if (!(currentKey in obj)) {
     throw new RangeError(`The key \`${currentKey}\` does not exist in the current object tree.`)
   }
 
   const rest = match.groups.rest
   const hasRest = Boolean(rest.length)
+  const currentValue = obj[currentKey]
 
-  if (hasRest && !valueIsObject(obj[currentKey])) {
+  if (hasRest && !valueIsObject(currentValue)) {
     throw new TypeError(`The value at key \`${currentKey}\` is not an object and can’t be traversed.`)
   }
 
   return (
     hasRest
-      ? accessObjectProp(obj[currentKey], rest.substring(1))
-      : obj[currentKey]
+      ? accessObjectProp(currentValue, rest.substring(1))
+      : currentValue
   )
 }
 
 export const dotFlattenObject = (obj) => {
-  assert(valueIsComposite(obj), 'Only composite values can be flattened.')
+  if (!valueIsComposite(obj)) {
+    throw new TypeError('Only composite values can be flattened.')
+  }
 
   const output = {}
 
