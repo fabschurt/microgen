@@ -30,7 +30,21 @@ export const transformObjectValues = (obj, cb) => {
 
 export const cleanUpObjectList = (objectList) => objectList.filter(objectIsEmpty)
 
-export const mergeObjectList = (objectList) => Object.assign({}, ...objectList)
+export const mergeObjectList = (objectList) => {
+  const output = Object.assign({}, objectList.shift())
+
+  for (const obj of objectList) {
+    for (const [key, val] of Object.entries(obj)) {
+      if (key in output && valueIsObject(output[key]) && valueIsObject(val)) {
+        output[key] = mergeObjectList([output[key], val])
+      } else {
+        output[key] = val
+      }
+    }
+  }
+
+  return output
+}
 
 export const accessObjectProp = (obj, propPath) => {
   const match = matchPropPath(propPath)

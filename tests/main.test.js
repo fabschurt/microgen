@@ -7,7 +7,7 @@ import microgen from '#src/main'
 
 describe('#src/main', () => {
   describe('main()', () => {
-    it('generates a single-page website from a source bundle', async () => {
+    it('generates a single-page website from a source project', async () => {
       await withTempDir(async (prefixWithTempDir) => {
         const srcDirPath = prefixWithTempDir('src')
         const buildDirPath = prefixWithTempDir('dist')
@@ -18,6 +18,7 @@ describe('#src/main', () => {
 
         const dataFilePath = join(srcDirPath, 'data.json')
         const transFilePath = join(transDirPath, 'en.json')
+        const helpersFilePath = join(srcDirPath, 'helpers.mjs')
         const indexTemplatePath = join(srcDirPath, 'index.pug')
         const indexOutputPath = join(buildDirPath, 'index.html')
         const mainJSFileBasePath = join(assetsDirBasePath, 'app.js')
@@ -53,6 +54,9 @@ describe('#src/main', () => {
   }
 }
 `)
+        await fs.writeFile(helpersFilePath, `
+export const toUpperCase = (str) => str.toUpperCase()
+`)
         await fs.writeFile(indexTemplatePath, `
 doctype html
 html(lang=_.locale)
@@ -60,7 +64,7 @@ html(lang=_.locale)
     title Some meaningless title
   body
     p #{_.t('greetings')}! I’m #{_.t('fullName', { firstName: id.firstName, lastName: id.lastName })}, I’m #{age} years old, and I live in #{location.city}.
-    p I work as a #{_.t('occupation.dev')}, but I’ve always dreamt about being a #{_.t('occupation.fireman')}.
+    p I work as a #{_.t('occupation.dev')}, but I’ve always #{_.toUpperCase('dreamt')} about being a #{_.t('occupation.fireman')}.
 `)
         await fs.writeFile(join(srcDirPath, mainJSFileBasePath), mainJSFileContent)
         await fs.writeFile(join(srcDirPath, mainCSSFileBasePath), mainCSSFileContent)
@@ -83,7 +87,7 @@ html(lang=_.locale)
             '</head>' +
             '<body>' +
               '<p>Hello! I’m John Smith, I’m 35 years old, and I live in New York City.</p>' +
-              '<p>I work as a developer, but I’ve always dreamt about being a firefighter.</p>' +
+              '<p>I work as a developer, but I’ve always DREAMT about being a firefighter.</p>' +
             '</body>' +
           '</html>',
         )
