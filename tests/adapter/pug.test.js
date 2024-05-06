@@ -18,7 +18,7 @@ doctype html
 html
   body
     p Hello, #{name} #{surname}.
-`)
+        `)
 
         const result = await (
           renderTemplate(renderPug, readFile)(templateBasePath, {

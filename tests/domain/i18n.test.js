@@ -18,6 +18,7 @@ describe('#src/domain/i18n', () => {
         const file2Path = join(translationDirPath, 'en.json')
 
         await fs.mkdir(translationDirPath, { recursive: true })
+
         await fs.writeFile(file1Path, `
 {
   "greetings": "Bonjour",
@@ -31,7 +32,8 @@ describe('#src/domain/i18n', () => {
     ]
   }
 }
-`)
+        `)
+
         await fs.writeFile(file2Path, `
 {
   "greetings": "Hello",
@@ -45,7 +47,7 @@ describe('#src/domain/i18n', () => {
     ]
   }
 }
-`)
+        `)
 
         const _parseProjectTranslations = (
           parseProjectTranslations(
