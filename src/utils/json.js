@@ -1,9 +1,9 @@
 export const parseJSONFile = (
   (ifPathExists, readFile) => (
-    (filePath) => (
+    (jsonFilePath) => (
       ifPathExists(
-        filePath,
-        () => readFile(filePath).then(JSON.parse),
+        jsonFilePath,
+        (filePath) => readFile(filePath).then(JSON.parse),
         {},
       )
     )

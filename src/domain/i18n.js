@@ -1,4 +1,3 @@
-import assert from 'node:assert'
 import { join } from 'node:path'
 
 const LANG_PATTERN = /^[a-z]{2}$/
@@ -8,7 +7,9 @@ const TRANSLATION_FILE_EXT = '.json'
 export const parseProjectTranslations = (
   (parseJSONFile, withSrcDir, dotFlattenObject) => (
     (lang) => {
-      assert.match(lang, LANG_PATTERN, `\`${lang}\` is not a valid language code.`)
+      if (!LANG_PATTERN.test(lang)) {
+        throw new Error(`\`${lang}\` is not a valid language code.`)
+      }
 
       return withSrcDir((prefixWithSrcDir) => {
         const translationFilePath = join(

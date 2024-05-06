@@ -47,12 +47,10 @@ describe('#src/domain/i18n', () => {
 }
 `)
 
-        const withSrcDir = withDir(srcDirPath)
-        const _parseJSONFile = parseJSONFile(ifPathExists, readFile)
         const _parseProjectTranslations = (
           parseProjectTranslations(
-            _parseJSONFile,
-            withSrcDir,
+            parseJSONFile(ifPathExists, readFile),
+            withDir(srcDirPath),
             dotFlattenObject,
           )
         )
@@ -83,10 +81,7 @@ describe('#src/domain/i18n', () => {
     })
 
     it('throws if an invalid `lang` parameter is passed', () => {
-      assert.throws(
-        () => parseProjectTranslations(noop, noop, noop)('fAiL'),
-        assert.AssertionError,
-      )
+      assert.throws(() => parseProjectTranslations(noop, noop, noop)('fAiL'))
     })
   })
 })

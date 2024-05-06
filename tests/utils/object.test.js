@@ -60,10 +60,10 @@ describe('#src/utils/object', () => {
   describe('transformObjectValues()', () => {
     it('recursively passes each of an object’s nested values trough a callback', () => {
       const obj = {
-        foo: 'bar',
+        foo: 42,
         stuff: [
           'foo',
-          'bar',
+          Symbol.for('clutter'),
           {
             some_prop: 'a',
             other_prop: 'b',
@@ -90,10 +90,10 @@ describe('#src/utils/object', () => {
       assert.deepStrictEqual(
         transformObjectValues(obj, transformer),
         {
-          foo: 'BAR',
+          foo: 42,
           stuff: [
             'FOO',
-            'BAR',
+            Symbol.for('clutter'),
             {
               some_prop: 'A',
               other_prop: 'B',
@@ -112,6 +112,17 @@ describe('#src/utils/object', () => {
         },
       )
     })
+
+    it('throws if not passed a composite value', () => {
+      assert.throws(
+        () => dotFlattenObject(3.14),
+        TypeError,
+      )
+      assert.throws(
+        () => dotFlattenObject(Symbol.for('foobar')),
+        TypeError,
+      )
+    })
   })
 
   describe('cleanUpObjectList()', () => {
@@ -127,6 +138,7 @@ describe('#src/utils/object', () => {
         {
           stuff: 'clutter',
         },
+        {},
       ]
 
       assert.deepStrictEqual(
@@ -170,7 +182,7 @@ describe('#src/utils/object', () => {
           identity: {
             name: 'John',
             surname: 'Doe',
-          }
+          },
         }
       )
     })
@@ -192,10 +204,7 @@ describe('#src/utils/object', () => {
     })
 
     it('throws if the property path is invalid', () => {
-      assert.throws(
-        () => accessObjectProp({}, '379&239--'),
-        assert.AssertionError,
-      )
+      assert.throws(() => accessObjectProp({}, '379&239--'))
     })
 
     it('throws if one of the nested properties does not exist or is not an object', () => {
@@ -248,11 +257,11 @@ describe('#src/utils/object', () => {
     it('throws if not passed a composite value', () => {
       assert.throws(
         () => dotFlattenObject(42),
-        assert.AssertionError,
+        TypeError,
       )
       assert.throws(
         () => dotFlattenObject('Hello!'),
-        assert.AssertionError,
+        TypeError,
       )
     })
   })
