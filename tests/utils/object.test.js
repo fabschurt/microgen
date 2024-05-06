@@ -157,7 +157,7 @@ describe('#src/utils/object', () => {
   })
 
   describe('mergeObjectList()', () => {
-    it('shallow-merges objects from a list into a single object', () => {
+    it('deep-merges a list of objects into a single object (simplified algorithm)', () => {
       const objectList = [
         {
           foo: 'bar',
@@ -170,6 +170,17 @@ describe('#src/utils/object', () => {
           identity: {
             name: 'John',
             surname: 'Doe',
+            location: {
+              country: 'UK',
+            },
+          },
+        },
+        {
+          identity: {
+            surname: 'Smith',
+            location: {
+              city: 'Portsmouth',
+            },
           },
         },
       ]
@@ -181,7 +192,11 @@ describe('#src/utils/object', () => {
           bar: 'foo',
           identity: {
             name: 'John',
-            surname: 'Doe',
+            surname: 'Smith',
+            location: {
+              country: 'UK',
+              city: 'Portsmouth',
+            },
           },
         }
       )

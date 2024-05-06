@@ -1,5 +1,6 @@
 import { parseProjectData, mergeDataWithEnvVars } from '#src/domain/data'
 import { parseProjectTranslations } from '#src/domain/i18n'
+import { importCustomHelpers } from '#src/domain/helpers'
 import { renderProjectIndex, copyProjectAssetsDir } from '#src/domain/assets'
 import { parseJSONFile } from '#src/utils/json'
 import {
@@ -59,6 +60,9 @@ export default async function main(
             }))
         )
         : {}
+      ,
+      importCustomHelpers(withSrcDir, ifPathExists)
+        .then((helpers) => ({ _: Object.assign({}, helpers) }))
       ,
     ])
       .then(cleanUpObjectList)
