@@ -14,11 +14,12 @@ describe('#src/domain/helpers', () => {
         const filePath = join(srcDirPath, 'helpers.mjs')
 
         await fs.mkdir(srcDirPath)
+
         await fs.writeFile(filePath, `
 export const sayHello = () => 'Hello World!'
 
 export const add2 = (num) => num + 2
-`)
+        `)
 
         const helpers = await importCustomHelpers(withDir(srcDirPath), ifPathExists)
 

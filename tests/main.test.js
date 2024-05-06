@@ -43,7 +43,8 @@ describe('#src/main', () => {
     "city": "%SECRET_CITY%"
   }
 }
-`)
+        `)
+
         await fs.writeFile(transFilePath, `
 {
   "greetings": "Hello",
@@ -53,10 +54,12 @@ describe('#src/main', () => {
     "fireman": "firefighter"
   }
 }
-`)
+        `)
+
         await fs.writeFile(helpersFilePath, `
 export const toUpperCase = (str) => str.toUpperCase()
-`)
+        `)
+
         await fs.writeFile(indexTemplatePath, `
 doctype html
 html(lang=_.locale)
@@ -65,7 +68,8 @@ html(lang=_.locale)
   body
     p #{_.t('greetings')}! I’m #{_.t('fullName', { firstName: id.firstName, lastName: id.lastName })}, I’m #{age} years old, and I live in #{location.city}.
     p I work as a #{_.t('occupation.dev')}, but I’ve always #{_.toUpperCase('dreamt')} about being a #{_.t('occupation.fireman')}.
-`)
+        `)
+
         await fs.writeFile(join(srcDirPath, mainJSFileBasePath), mainJSFileContent)
         await fs.writeFile(join(srcDirPath, mainCSSFileBasePath), mainCSSFileContent)
 
