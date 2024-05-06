@@ -1,5 +1,5 @@
 import * as fs from 'node:fs/promises'
-import { join } from 'node:path'
+import { join, resolve } from 'node:path'
 
 const prefixWithDir = (dirPath) => (relativePath = '') => join(dirPath, relativePath)
 
@@ -8,7 +8,7 @@ export const withDir = (
     async (cb) => {
       await fs.access(dirPath)
 
-      return cb(prefixWithDir(dirPath))
+      return cb(prefixWithDir(resolve(dirPath)))
     }
   )
 )
@@ -28,7 +28,7 @@ export const withScratchDir = (
 
       await fs.access(dirPath, fs.constants.W_OK)
 
-      return cb(prefixWithDir(dirPath))
+      return cb(prefixWithDir(resolve(dirPath)))
     }
   )
 )
