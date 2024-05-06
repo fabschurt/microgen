@@ -17,13 +17,13 @@ export const transformObjectValues = (obj, cb) => {
     throw new TypeError('Only composite values can be transformed.')
   }
 
-  Object.keys(obj).forEach((key) => {
-    if (valueIsComposite(obj[key])) {
-      transformObjectValues(obj[key], cb)
+  for (const [key, val] of Object.entries(obj)) {
+    if (valueIsComposite(val)) {
+      transformObjectValues(val, cb)
     } else {
       cb(obj, key)
     }
-  })
+  }
 
   return obj
 }
@@ -81,15 +81,15 @@ export const dotFlattenObject = (obj) => {
 
   const output = {}
 
-  Object.entries(obj).forEach(([prop, val]) => {
+  for (const [prop, val] of Object.entries(obj)) {
     if (valueIsComposite(val)) {
-      Object.entries(dotFlattenObject(val)).forEach(([subProp, subVal]) => {
+      for (const [subProp, subVal] of Object.entries(dotFlattenObject(val))) {
         output[`${prop}.${subProp}`] = subVal
-      })
+      }
     } else {
       output[prop] = val
     }
-  })
+  }
 
   return output
 }
