@@ -33,4 +33,4 @@ and finally render the whole thing as `dist/index.html`.
 
 - [ ] Write an updated and detailed CLI usage in the README
 - [ ] Add some CLI logging and user-friendly exception catching
-- [ ] Write JSDoc blocks
+- [ ] Annotate the code with JSDoc and enable TypeScript type checking
