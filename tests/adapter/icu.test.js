@@ -5,7 +5,7 @@ import { IntlMessageFormat } from 'intl-messageformat'
 
 describe('#src/adapter/icu', () => {
   describe('translateString()', () => {
-    describe('translates an ICU-formatted string using a static dictionary', () => {
+    it('translates an ICU-formatted string using a static dictionary', () => {
       const dictionary = {
         greetings: 'Hello, my name is {name}.',
         occupation: 'I’m a {job}, the best in {town}.',
